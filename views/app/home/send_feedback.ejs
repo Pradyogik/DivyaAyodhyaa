@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+<style>
+   
+
+  .emojis {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0px;
+  }
+  .emojiscontent
+  {
+    display: flex;
+
+  }
+
+  .emoji {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+
+  .feedback-section {
+    margin-bottom: 10px;
+    border-top: 2px solid #eeeeee;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    padding-top: 14px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+
+  .rating-buttons {
+    display: flex;
+    justify-content: end;
+    margin-top: -30px;
+  }
+
+  .rating-buttons button {
+    padding: 5px 10px;
+    border: 1px solid  #908b8b;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0px 3px;
+  }
+
+  #delivery-thumbs-up.selected
+   {
+     background-color: green;
+    color: white;
+  }
+  #delivery-thumbs-down.selected
+    {
+      background-color: red;
+      color: white;
+   }
+
+   #product-thumbs-up.selected
+   {
+     background-color: green;
+    color: white;
+  }
+  #product-thumbs-down.selected
+    {
+      background-color: red;
+      color: white;
+   }
+
+   #customer-thumbs-up.selected
+   {
+     background-color: green;
+    color: white;
+  }
+  #customer-thumbs-down.selected
+    {
+      background-color: red;
+      color: white;
+   }
+
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+   img#sad.emoji.selected,img#neutral.emoji.selected, img#happy.emoji.selected,img#love.emoji.selected
+  {
+    border: 2px solid green;
+  border-radius: 50%;
+  padding: 3px;
+  }
+  .emojiscontent h6{
+    margin-top: 5px;
+    margin-bottom: 0px;
+
+  }
+</style>
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/profile"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+  
+
+      <main class="main1">
+        <section class="py-0 ">
+          <div class="container-fluid">
+
+           <% if(isfeedback.length>0) { %>
+            <center>
+            <div style="margin-top: 40%;">
+              
+                <h4><i class="fa fa-check" style="    font-size: 50px;
+                  color: green;
+                  border: 5px solid green;
+                  border-radius: 50%;
+                  padding: 10px;"></i></h4>
+            <h5 style="font-size: 16px;
+            font-weight: 700;
+        margin:5px 5px;">You have already submitted feedback</h5>
+        <p>We appreciate your feedback. If you would still like to get in contact with us.</p>
+        <a href="/contactus" class="btn btn-info">Contact Us</a>
+      </div>
+        </center>
+       
+          
+            <% } else { %>
+
+              <div style="margin-top: 40%; display: none;" id="successfeedback">
+                <center>
+                  <h4><i class="fa fa-check" style="    font-size: 50px;
+                    color: green;
+                    border: 5px solid green;
+                    border-radius: 50%;
+                    padding: 10px;"></i></h4>
+                  <h5 style="font-size: 16px;
+                  font-weight: 700;
+              margin:5px 5px;">Submission Successful</h5>
+                    <p>Thank you for submitting Your Feedback.</p>
+                  
+                </center>
+              </div>
+          
+ 
+  <form id="feddbaksumit" method="post" onsubmit="return validatefeedbac()">
+    <h5 style="font-size: 16px;text-align: center;">How would you rate your experience? </h5>
+    <div class="emojis">
+      <img src="/app-assets/img/services/sad.png" alt="Sad Emoji" class="emoji" id="sad">
+      
+      <img src="/app-assets/img/services/Neutral.png" alt="Neutral Emoji" class="emoji" id="neutral">
+      <img src="/app-assets/img/services/happy.png" alt="Happy Emoji" class="emoji" id="happy">
+      <img src="/app-assets/img/services/love.png" alt="Love Emoji" class="emoji" id="love">
+     
+    </div>
+    <div class="emojiscontent">
+      <h6  id="sad-cont" class="emojisconteent" style=" font-size: 14px;margin-left: 16%;display: none;">Not Happy</h6>
+      <h6  id="neutral-cont" class="emojisconteent" style=" font-size: 14px;margin-left: 35%;display: none;">Neutral</h6>
+      <h6  id="happy-cont" class="emojisconteent" style=" font-size: 14px;margin-left: 53%;display: none;">Happy</h6>
+      <h6  id="love-cont" class="emojisconteent" style=" font-size: 14px;margin-left: 65%;display: none;">Very Happy</h6>
+    </div>
+
+    <h5 style="font-size: 16px;margin-top: 20px;">Would you tell us a little more about Your experience. </h5>
+
+    <div class="feedback-section">
+      <label for="delivery-time">Delivery time:</label>
+      <div class="rating-buttons">
+        <button type="button" id="delivery-thumbs-up" class="thumbs-up">👍</button>
+        <button type="button" id="delivery-thumbs-down" class="thumbs-down">👎</button>
+      </div>
+    </div>
+
+    <div class="feedback-section">
+      <label for="product-quality">Product quality:</label>
+      <div class="rating-buttons">
+        <button type="button" id="product-thumbs-up" class="thumbs-up">👍</button>
+        <button type="button" id="product-thumbs-down" class="thumbs-down">👎</button>
+      </div>
+    </div>
+
+    <div class="feedback-section">
+      <label for="customer-service">Customer Service:</label>
+      <div class="rating-buttons">
+        <button type="button" id="customer-thumbs-up" class="thumbs-up">👍</button>
+        <button type="button" id="customer-thumbs-down" class="thumbs-down">👎</button>
+      </div>
+    </div>
+
+    <div class="feedback-section">
+      <label for="comment">Comment:</label>
+      <textarea id="comment" placeholder="Enter your feedback here"></textarea>
+    </div>
+
+    <button type="submit" class="submit-button" id="submit-feedback" >Send Feedback</button>
+
+      
+  </form> 
+  <% } %>
+  </div>
+         
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+
+
+<script>
+  const emojis = document.querySelectorAll(".emoji");
+  const emojisconteent = document.querySelectorAll(".emojisconteent");
+  const thumbsUpButtons = document.querySelectorAll(".thumbs-up");
+  const thumbsDownButtons = document.querySelectorAll(".thumbs-down");
+  const commentInput = document.getElementById("comment");
+  const submitButton = document.getElementById("submit-feedback");
+
+  // Add event listeners to emojis
+  emojis.forEach(emoji => {
+    emoji.addEventListener("click", () => {
+      // Handle emoji click
+      console.log(`Selected emoji: ${emoji.alt}`);
+      // Clear any previously selected emojis
+      emojis.forEach(e => {
+        e.classList.remove("selected");
+        
+      });
+      // Mark the clicked emoji as selected
+      emoji.classList.add("selected");
+
+      // Hide all feedback contents
+      emojisconteent.forEach(content => {
+                content.style.display = "none";
+            });
+
+            // Show the corresponding feedback content
+            const contentId = `${emoji.id}-cont`;
+            const content = document.getElementById(contentId);
+            if (content) {
+                content.style.display = "block";
+            }
+
+
+    });
+  });
+
+
+
+  // Add event listeners to thumbs up/down buttons
+  thumbsUpButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      // Handle thumbs up click
+      console.log(`Thumbs up clicked: ${button.id}`);
+      // Toggle the selected class for thumbs up/down buttons
+      button.classList.toggle("selected");
+      button.nextElementSibling.classList.remove("selected");
+    });
+  });
+
+  thumbsDownButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      // Handle thumbs down click
+      console.log(`Thumbs down clicked: ${button.id}`);
+      // Toggle the selected class for thumbs up/down buttons
+      button.classList.toggle("selected");
+      button.previousElementSibling.classList.remove("selected");
+    });
+  });
+
+  // Add event listener to submit button
+  function validatefeedbac() {
+    event.preventDefault(); // Prevent the default form submission
+    // Get feedback data
+    const selectedEmoji = document.querySelector(".emoji.selected") ? document.querySelector(".emoji.selected").alt : null;
+    const deliveryRating = document.getElementById("delivery-thumbs-up").classList.contains("selected") ? "1" : document.getElementById("delivery-thumbs-down").classList.contains("selected") ? "0" : null;
+    const productRating = document.getElementById("product-thumbs-up").classList.contains("selected") ? "1" : document.getElementById("product-thumbs-down").classList.contains("selected") ? "0" : null;
+    const customerRating = document.getElementById("customer-thumbs-up").classList.contains("selected") ? "1" : document.getElementById("customer-thumbs-down").classList.contains("selected") ? "0" : null;
+    const comment = commentInput.value;
+
+    // Submit feedback (replace with your actual submission logic)
+    console.log(`Feedback submitted:`);
+    console.log(`Emoji: ${selectedEmoji}`);
+    console.log(`Delivery Rating: ${deliveryRating}`);
+    console.log(`Product Rating: ${productRating}`);
+    console.log(`Customer Rating: ${customerRating}`);
+    console.log(`Comment: ${comment}`);
+    
+    if (selectedEmoji == null) {
+      new Toasteur("top-center", 2000).error("Please Choose Emoji For App Experience", 'Error!');
+      return false;
+     }
+     if (deliveryRating == null) {
+      new Toasteur("top-center", 2000).error("Please Choose Delivery Time Experience", 'Error!');
+      return false;
+     }
+     if (productRating == null) {
+      new Toasteur("top-center", 2000).error("Please Choose Product Quality  Experience", 'Error!');
+      return false;
+     }
+
+     if (customerRating == null) {
+      new Toasteur("top-center", 2000).error("Please Choose Customer Service  Experience", 'Error!');
+      return false;
+     }
+
+     if (comment == '') {
+      new Toasteur("top-center", 2000).error("Please Comment Your Experience", 'Error!');
+      return false;
+     }
+     else{
+
+        // Create a form data object
+    const formData = new FormData();
+    formData.append('emoji', selectedEmoji);
+    formData.append('deliveryRating', deliveryRating);
+    formData.append('productRating', productRating);
+    formData.append('customerRating', customerRating);
+    formData.append('comment', comment);
+
+
+
+      fetch('/sendfeedback', {
+        method: 'POST',
+        body: formData
+            })
+            .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // new Toasteur("top-center", 2000).success(data.message, 'Success!');
+        $('#successfeedback').show();
+        $('#feddbaksumit').hide();
+        // Reload the page after 2 seconds
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 2000);
+        // Optionally, clear the form or perform other actions
+      } else {
+        new Toasteur("top-center", 2000).error(data.message, 'Error!');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      new Toasteur("top-center", 2000).error('An error occurred while submitting your feedback. Please try again.', 'Error!');
+    });
+
+    return false; // Prevent the default form submission
+  }
+
+  document.getElementById('feddbaksumit').addEventListener('submit', validatefeedbac);
+    
+    }
+</script>

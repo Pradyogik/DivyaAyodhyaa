@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+    <style>
+        input:read-only {
+            background-color: grey;
+            color: #fff;
+        }
+         .ss input {
+             padding: 2px !important; 
+             font-size: 11px !important; 
+        }
+        .ss select {
+             padding: 2px !important; 
+             font-size: 11px !important; 
+        }
+        .ss textarea {
+             padding: 2px !important; 
+             font-size: 11px !important; 
+        }
+    </style>
+
+    <body>
+        <div class="inner-header affix">
+            <h3><a href="/profile"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a>
+                <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png">
+            </h3>
+
+        </div>
+
+        <main class="main1">
+            <section class="py-0 ">
+                <div class="container-fluid">
+
+                    <div class="row ">
+
+
+
+                        <div class="cms-div">
+
+                            <div class="card-body text-md-start">
+
+                                <div class="card" style="min-height: 100%;">
+                                    <form name="apply_frm" id="apply_frm" method="post"  onsubmit="return validateRegister()">
+                                        <div class="form" style="padding: 20px 20px;">
+
+
+                                            <% var mobile='readonly' ; var email='readonly' ; if(!profile[0].mobile) {
+                                                var mobile='' ; } if(!profile[0].email) { var email='' ; } %>
+
+                                                <div class="input-field">
+                                                    <i class="fa fa-user"></i>
+                                                    <input type="text" name="first_name" id="first_name"
+                                                        placeholder="Enter Your Full Name" maxlength="20"
+                                                        value="<%= profile[0].full_name %>"
+                                                        onkeydown="return alphaOnly(event);">
+                                                </div>
+                                                <input type="hidden" name="user_id" id="user_id"
+                                                    value="<%= profile[0].id %>">
+
+
+                                                <div class="input-field">
+                                                    <i class="fa fa-phone"></i>
+                                                    <input type="number" name="mobile" id="mobile"
+                                                        value="<%= profile[0].mobile %>"
+                                                        placeholder="Enter Your  Mobile No." <%=mobile %> >
+                                                </div>
+
+                                                <div class="input-field">
+                                                    <i class="fa fa-envelope"></i>
+                                                    <input type="email" name="email" id="email"
+                                                        value="<%= profile[0].email %>" maxlength="40"
+                                                        placeholder="Enter Your  Email ID" <%=email %>>
+                                                </div>
+
+                                                <div class="input-field ss">
+                                                        <label for="state_name">State <span style="font-size: 20px;color: red;"></span></label>
+                                                        <select class="form-control"  name="state_name" id="state_name" onchange="getcity(value)">
+                                                            <option value="">---Select State---</option>
+                                                            <% if(statelist.length > 0)
+                                                                { 
+                                                                for (let s of statelist)
+                                                                {   
+                                                                            
+                                                                %>
+                                                          
+                                                            <option value="<%= s.id %>" <%= s.id === (profile[0]?.state_id || '') ? 'selected' : '' %>><%= s.state_name %></option>
+                                                            
+                                                            <% } } %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field ss">
+                                                        <label for="city_name">City <span style="font-size: 20px;color: red;"></span></label>
+                                                        <select class="form-control"  name="city_name" id="city_name" >
+                                                            <option value="">---Select City---</option>
+                                                        
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field ss">
+                                                        <label for="end_time">Address <span style="font-size: 20px;color: red;"></span></label>
+                                                        <input type="text" name="address" id="address"
+                                                            value="<%= profile[0].address %>" maxlength="30"
+                                                            placeholder="Enter Your  Address" class="form-control">
+                                                    </div>
+                                                    
+                                                    <div class="input-field ss">
+                                                        <label for="end_time">Pincode <span style="font-size: 20px;color: red;"></span></label>
+                                                        <input type="text" name="pincode" id="pincode" value="<%= profile[0].pincode ? profile[0].pincode : '' %>"  placeholder="Enter Pincode" minlength="6" maxlength="6" 
+                                                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' onchange="return validatePincode()" class="form-control">
+                                                    </div>
+                                                 
+                                                    <div class="input-field ss">
+                                                        <label for="end_time">Landmark <span style="font-size: 20px;color: red;"></span></label>
+                                                        <textarea type="text" name="locality" id="locality"  placeholder="Enter Landmark" rows="2" class="form-control" ><%= profile[0].landmark ? profile[0].landmark : '' %></textarea>
+                                                    </div>
+
+
+
+
+                                                <input type="submit" name="btnLogin" value="Update" class="button"
+                                                
+                                                    style="    background: #e95612;">
+
+
+                                        </div>
+                                    </form>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+
+        <%- include('../layouts/footer') %>
+    </body>
+
+
+</html>
+
+
+<script>
+    function alphaOnly(event) {
+        var key = event.keyCode;
+        return ((key >= 65 && key <= 90) || key == 8 || key == 32);
+    };
+</script>
+<script>
+
+
+
+function validateRegister() {
+    var first_name = document.getElementById('first_name').value;
+    var mobile = document.getElementById('mobile').value;
+    var email = document.getElementById('email').value;
+    var state_name = document.getElementById('state_name').value;
+    var city_name = document.getElementById('city_name').value;
+    var address = document.getElementById('address').value;
+    var pincode = document.getElementById('pincode').value;
+    var locality = document.getElementById('locality').value;
+
+    // Check required fields
+    if (first_name === '') {
+        new Toasteur("top-center", 2000).error("Name required", 'Error!');
+        $('#first_name').focus();
+        return false;
+    }
+
+    if (mobile === '') {
+        new Toasteur("top-center", 2000).error("Mobile NO. required", 'Error!');
+        $('#mobile').focus();
+        return false;
+    }
+
+    if (mobile.length !== 10) {
+        new Toasteur("top-center", 2000).error("Mobile No. must be exactly 10 digits", 'Error!');
+        $('#mobile').focus();
+        return false;
+    }
+
+    if (email === '') {
+        new Toasteur("top-center", 2000).error("Email ID required", 'Error!');
+        $('#email').focus();
+        return false;
+    }
+
+    // Optional field validations
+    if (state_name && state_name.trim() === '') {
+        new Toasteur("top-center", 2000).error("State cannot be empty if provided", 'Error!');
+        $('#state_name').focus();
+        return false;
+    }
+
+    if (city_name && city_name.trim() === '') {
+        new Toasteur("top-center", 2000).error("City cannot be empty if provided", 'Error!');
+        $('#city_name').focus();
+        return false;
+    }
+
+    if (address && address.trim() === '') {
+        new Toasteur("top-center", 2000).error("Address cannot be empty if provided", 'Error!');
+        $('#address').focus();
+        return false;
+    }
+
+    if (pincode) {
+        if (pincode.length !== 6) {
+            new Toasteur("top-center", 2000).error("Pincode must be exactly 6 digits if provided", 'Error!');
+            $('#pincode').focus();
+            return false;
+        }
+    }
+
+    // Submit data
+    fetch('/update-profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            first_name: first_name,
+            mobile: mobile,
+            email: email,
+            state_name: state_name,
+            city_name: city_name,
+            address: address,
+            pincode: pincode,
+            locality: locality
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            new Toasteur("top-center", 2000).success(data.message, 'Success!');
+            setTimeout(() => {
+                window.location.href = '/profile'; // Redirect to profile page
+            }, 1000);
+        } else {
+            new Toasteur("top-center", 2000).error(data.message, 'Error!');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        new Toasteur("top-center", 2000).error('An error occurred while updating your profile. Please try again.', 'Error!');
+    });
+
+    return false; // Prevent the default form submission
+}
+
+const currentCityId = "<%= profile[0].city_id %>";
+// Get city list state wise
+function getcity(stateId) {
+    
+    //alert(stateId)
+    if (!stateId) {
+        $('#city_name').html('<option value="">Select City</option>'); // Reset the city dropdown if no state is selected
+        return;
+    }
+
+    $.ajax({
+        type: 'GET', // Use GET request
+        url: '/getcitylist/?state_id=' + stateId, // The URL to send the request
+        dataType: 'json', // Expect the response in JSON format
+        success: function (response) {
+            //alert(JSON.stringify(response)); // Alerting the response to verify the data
+            
+            // Check if the response is valid
+            if (response) {
+                $('#city_name').empty(); // Clear the previous options
+                $('#city_name').append('<option value="">Select City</option>'); // Add default option
+                
+                $.each(response || [], function (index, city) {
+                    const selected = city.id == (currentCityId || '') ? 'selected' : ''; // Safe check for currentCityId
+                    $('#city_name').append('<option value="' + city.id + '" ' + selected + '>' + city.city_name + '</option>');
+                });
+
+            }
+            // If response is empty, add a default message
+                if (!response || response.length === 0) {
+                    $('#city_name').append('<option value="">No cities available</option>');
+                }
+        },
+        error: function (xhr, status, error) {
+            alert('Error: ' + error); // In case of error, display it
+        }
+    });
+}
+
+
+// Automatically load cities if editing with a pre-selected state
+$(document).ready(function() {
+    const currentStateId = "<%= profile[0].state_id %>"; // Assuming you have current state ID
+    if (currentStateId) {
+        getcity(currentStateId); // Load cities for the current state
+    }
+});
+
+
+
+</script>

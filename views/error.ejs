@@ -1,0 +1,36 @@
+
+<%- include('app/layouts/top-header') %>
+<% pageactive = '' %>
+
+<html>
+      <head>
+        <title>Error Page</title>
+      </head>
+      <body>
+
+        <div class="inner-header affix">
+          <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a>  Oops! Page  <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+  
+      </div>
+ 
+<div class="container-fluid py-lg-5 py-sm-4">
+
+      
+        <div class="panels" style="min-height:200px;margin-top: 50%;">
+            
+         <h3 class="title-big text-center" style="font-size: 20px;">Oops! Something went wrong. </h3>
+         <center><img src="https://pngimg.com/uploads/attention/small/attention_PNG28.png" height="100px;"></center>
+         <div style="display: none;">
+            <p><%= message %></p>
+            <p><%= error.status %></p>
+            <p><%= error.stack %></p>
+         </div>
+           
+
+        </div>
+    </div>
+       
+
+    <%- include('app/layouts/footer') %>
+      </body>
+    </html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+    <body>
+        <div class="inner-header affix">
+            <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a>
+                <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png">
+            </h3>
+
+        </div>
+
+        <main class="main1">
+            <section class="py-0 ">
+                <div class="container-fluid">
+
+                    <div class="profilediv">
+                        <a href="/update-profile">
+                            <div class="profiledivname">
+                                <% var sessionname=profiledata[0].full_name ; if(sessionname) { var
+                                    shortname=sessionname.charAt(0); var sessionname=sessionname.substring(0, 18); }
+                                    else{ var shortname='U' ; var sessionname='User' ; } %>
+
+
+                                    <h4>
+                                        <%= shortname %>
+                                    </h4>
+                            </div>
+
+                            <div class="profiledivhead">
+                                <h4>
+                                    <%= sessionname %>
+                                </h4>
+                                <a href="/update-profile">View Profile</a>
+                                <i class="fa fa-angle-right "></i>
+                            </div>
+                        </a>
+
+
+                    </div>
+
+                    <div style="width: 100%;display: flex;">
+
+                        <div class="profilediv" style="width: 48%;display: flow;">
+                            <a href="/favourite">
+                                <div class="profiledivimage"
+                                    style="background: #eee;padding: 7px 10px;border-radius: 50%;width: 40px;">
+                                    <img src="/app-assets/img/services/icon _heart outline_.png" style="height: 20px;">
+                                </div>
+                                <div class="profiledivhead" style="margin-left: 0px;">
+                                    <h4 style="font-size: 15px;">Favourite</h4>
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="profilediv" style="width: 48%;display: flow;margin-left: 4%;">
+                            <a href="/booking">
+                                <div class="profiledivimage"
+                                    style="background: #eee;padding: 7px 10px;border-radius: 50%;width: 40px;">
+                                    <img src="/app-assets/img/services/shopping-cart.png" style="height: 20px;">
+                                </div>
+                                <div class="profiledivhead" style="margin-left: 0px;">
+                                    <h4 style="font-size: 15px;">Bookings</h4>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <a href="/yourorders">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739.png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Your Orders</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+
+                            </div>
+
+
+                        </div>
+                    </a>
+
+
+                    <a href="/refundcan">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (1).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Refund & Cancellation Polciy</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+                            </div>
+
+                        </div>
+                    </a>
+
+                    <a href="/privacypolicy">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (1).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Privacy Policy</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+                            </div>
+
+                        </div>
+                    </a>
+
+                    <a href="/faq">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (1).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> FAQs</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+                            </div>
+
+                        </div>
+                    </a>
+                    <a href="/termcon">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (2).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Terms & Conditions</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+                            </div>
+
+                        </div>
+                    </a>
+                    <a href="/contactus">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (3).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Contact Us</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+                            </div>
+
+                        </div>
+                    </a>
+                    <a href="/sendfeedback">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (4).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Send Feedback</h4>
+                                <i class="fa fa-angle-right "
+                                    style=" margin-top: -22px; color: #191914; font-size: 25px;"></i>
+                            </div>
+
+                        </div>
+                    </a>
+
+                    <a href="/logout">
+                        <div class="profilediv" style="height:55px;">
+
+                            <div class="">
+                                <img src="/app-assets/img/services/Group 1000004739 (5).png" style="height: 30px;">
+                            </div>
+                            <div class="profiledivhead">
+                                <h4 style="margin-top: 6px; font-size: 17px;"> Log Out</h4>
+
+                            </div>
+
+                        </div>
+                    </a>
+
+
+
+
+
+                </div>
+            </section>
+        </main>
+
+
+        <%- include('../layouts/footer') %>
+    </body>
+
+
+</html>

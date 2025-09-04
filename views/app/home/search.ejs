@@ -1,0 +1,113 @@
+<%- include('../layouts/top-header') %>
+<section class="py-0 affix "  style="background-color: #fff;">
+    <div class="container-fluid">
+<div class="SearchForm " >
+  
+     <div class="noti1">
+        <form class="SearchForm1" id="searchForm">
+            <div class="FormControl">
+                <a href="/" style="    font-size: 35px;font-weight: 500; color: #000;"><span><i class="fa fa-times"></i></span></a>
+                <input type="text"  class="seachitem" id="search" name="search"   placeholder="<%=lang.search_home%>...." >
+                <button class="BtnSubmit"><img src="https://www.nationaltenders.com/frontend/assets/imgsec.svg" alt="submit"></button>
+               
+
+            </div>
+        </form>
+        <hr style=" margin: 0px;">
+        
+       
+       
+    </div>
+ <div>
+       
+    </div>
+</section>
+<section class="py-0  "  style="background-color: #fff;margin-top: 75px;  overflow-y: auto;">
+    <div class="container-fluid">
+        <div id="ajaxloader" class="ajaxloader" style="display: none;"></div>
+         <div id="searchResults"></div>
+        </div>
+        </section>
+
+
+<!-- ajax filter -->
+<script type="text/javascript">
+
+    function showLoader() {
+          document.getElementById("ajaxloader").style.display = "block";
+        }
+    
+        function hideLoader() {
+          document.getElementById("ajaxloader").style.display = "none";
+        }
+    
+    
+        const searchForm = document.getElementById('searchForm');
+      const searchInput = document.querySelector('#search');
+      
+      const results_body = document.querySelector('#searchResults');
+
+      
+      
+      
+      
+      function load_data(query)
+      {
+        if(query=== '')
+        
+        {
+          results_body.innerHTML = ''; // Clear results if search term is empty
+              return;
+        }
+    
+        
+       
+          const request = new XMLHttpRequest();
+          showLoader();
+      
+          request.open('GET', `/search?SearchInput=${query}`);
+      
+          request.onload = () => {
+            hideLoader();
+      
+              const results = request.responseText;
+        //alert(results);
+           
+              results_body.innerHTML = results;
+              // Automatically click the input field after a slight delay
+            setTimeout(() => {
+                searchInput.click();
+            }, 500); // Adjust timeout as needed
+              
+      
+          };
+      
+          request.send();
+      }
+     
+      // Event listener for form submit event
+    searchForm.addEventListener('submit', event => {
+      event.preventDefault(); // Prevent form submission
+      load_data(searchInput.value.trim());
+    });
+
+      // Event listener for input event
+      searchInput.addEventListener('input', () => {
+      
+          const query = searchInput.value;
+      
+          load_data(query);
+      
+      });
+      
+
+       // Automatically focus and click the search input when the page loads
+    window.addEventListener('load', () => {
+        // Ensure the search input is focused and clicked to trigger the keyboard
+        searchInput.focus();
+        setTimeout(() => {
+            searchInput.click();
+        }, 1000); // Adjust timeout as needed
+    });
+        </script>
+  

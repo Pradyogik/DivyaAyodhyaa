@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+<link href="/app-assets/css/homestay.css" rel="stylesheet"/>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/homestay"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> Property Room List <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+    <% if(error.length>0){ %>
+        <script>new Toasteur("top-center", 3000).error(" <%= error %>", 'Error!');</script>
+        
+        
+        <% } %>
+        
+        <% if(success.length>0){ %>
+        <script>new Toasteur("top-center", 3000).success(" <%= success %>", 'Success!');</script>
+        
+        
+        <% } %>
+     <main class="main1" style="margin-bottom: 0px;">
+        <section class="py-0 ">
+        
+         
+<div class="best-rooms " id="hotelist">
+    <div class="container-fluid py-lg-5 py-sm-4">
+        <div class="best-rooms w3l-blog ">
+            <div class="">
+                
+                <div class="ban-content-inf  panels">
+                    <div class="panel-title" style="margin-bottom: 5px;"><%= hotellist[0].property_name %></div>
+                    <hr>
+                    <div class="row">
+                    
+
+                    <% if(hotellist.length > 0)
+			        { 
+				    for (let l of hotellist)
+					{ 	
+
+                        var hotelid = encrypt(l.id) + "/" + encrypt(l.property_id);
+						
+			        %>
+                    <div class="maghny-gd-1 col-lg-3 col-md-4"  style="margin-bottom: 25px;">
+                        <div class="maghny-grid">
+                            <figure class="effect-lily">
+                                <img class="img-fluid" src="<%= stayhomeimageUrl+ l.room_image %>" alt="">
+                                <figcaption>
+                                    <div>
+                                        <h4 class="top-text"><%= l.room_category_name %>
+                                            <ul>
+                                                <li> <span class="fa fa-star"></span></li>
+                                                <li> <span class="fa fa-star"></span></li>
+                                                <li> <span class="fa fa-star"></span></li>
+                                                <li> <span class="fa fa-star"></span></li>
+                                                <li> <span class="fa fa-star-o"></span></li>
+                                            </ul>
+                                        </h4>
+                                        <p><i class="fa fa-inr"></i>  <%= l.price_per_night %> Per night</p>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                            <div class="room-info">
+                                <h3 class="room-title"><a href=""><%= l.room_category_name %></a></h3>
+                                <ul class="mb-3">
+                                    <%
+                                    if(l.room_ac_non_ac == 1)
+                                    {
+                                        var actype = 'AC';
+
+                                    }
+                                    else{
+                                        var actype = 'Non-AC';
+
+                                    }
+                                    %>
+                                    <li><span class="fa fa-users"></span>  <%= l.number_of_adults_stay %> Adults</li>
+                                    <li><span class="fa fa-home"></span> <%= l.room_size %> Sqft</li>
+                                    <li><span class="fa fa-bed"></span> <%= l.bedtype %></li>
+                                    <li><span class="fas fa-air-conditioner"></span> <%= actype %></li>
+                                    <li><span class="fa fa-inr"></span> <%= l.price_per_night %> Per Night</li>
+                                </ul>
+                               <ul class="mb-3">
+                                    <!-- <li><span class="fa fa-map-marker"></span><%= l.distance_from_ram_mandir %> km from Shri Ram Mandir</li> -->
+                                    
+                                   
+                                </ul> 
+                                <p><%= limitStringWithDot(l.description,50) %></p>
+                              <hr>
+                                <a href="/stay-ayodhya/booking/<%= hotelid %>" class="btn btn-style btn-secondary book mt-3" style="font-size: 16px;color: #fff;padding: 1px 10px">Book Now</a>
+                                <!-- <div class="room-info-bottom">
+                                    <ul class="room-amenities">
+                                        <li><a href="#url"><span class="fa fa-bed" title="Beds"></span></a></li>
+                                        <li><a href="#url"><span class="fa fa-television" title="Television"></span></a></li>
+                                        <li><a href="#url"><span class="fa fa-bath" title="Private Bathroom"></span></a></li>
+                                        <li><a href="#url"><span class="fa fa-motorcycle" title="Bike Rental"></span></a></li>
+                                    </ul>
+                                    <a href="/stay-ayodhya/homedetailpage/<%= hotelid %>" class="btn view">Full Info →</a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <% 
+				 } 
+			   }
+               else{ %>
+
+                <center><h4 style="color:red;text-align:center;font-size:20px;"> Room data not Found...</h4></center>
+
+
+              <% }
+			%>
+        </div>    
+
+               
+               
+            </div>
+            <br>
+			<center>
+			<ul class="newpagination modal-4">
+				<% var reamin = totalPages * pageSize;  if (reamin > pageSize) { %>  
+				<% if (currentPage > 1) { %>
+				<li><a href="?page=<%= currentPage - 1 %>" class="prev"><i class="fa fa-chevron-left"></i> Previous</a></li>
+				<% } %>
+				<% for (let i = 1; i <= totalPages; i++) { %>
+				<% if(i <= 6) { %>
+				<li><a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a></li>
+				<% } else if(currentPage == i){ %>
+					<li><a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a></li>
+					
+				<% break;  } } %>
+
+				<% if(currentPage >= 5) { if(currentPage != totalPages) { %>
+				<% if(currentPage != totalPages - 1) { %>
+				<li><a href="javascript:void(0)" class="">...</a></li>
+				<% } %>
+				<li><a href="?page=<%= totalPages %>"><%= totalPages %></a></li>
+
+				<%  } } %>
+
+			
+				<% if (currentPage < totalPages) { %>
+				<li><a href="?page=<%= currentPage + 1 %>" class="next"> Next  <i class="fa fa-chevron-right"></i></a></li> 
+				<% } %>
+
+				<% } %>
+			
+			</ul>
+			</center>
+            <br>
+        </div>
+    </div>
+</div>
+           
+               
+        </section>
+    </main>
+
+
+    <%- include('../layouts/footer') %>
+</body>
+
+
+</html>

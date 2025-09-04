@@ -1,0 +1,33 @@
+{
+   
+    "home": "होम",
+    "favourite": "पसंदीदा",
+    "bookings": "बुकिंग ",
+    "profile": "प्रोफ़ाइल",
+    "search_home": "होमस्टे खोजें",
+    "select_language": "भाषा चुने",
+    "head_one": "मुख्य बिंदु",
+        "about_ayodhya": "अयोध्या महात्म्य",
+        "temple_timing": "मंदिर का समय",
+        "must_vist": "प्रमुख भ्रमण स्थल",
+        "org_staru": "संगठन संरचना",
+        "local_uti": "नजदीकी सुविधाएं",
+        "book_homestay": "होमस्टे बुक करें",
+        "book_diyandprasadam": "दीपदान",
+        "book_cab": "कैब बुक करें",
+        "tour_package": "यात्रा पैकेज",
+        "purchase_gift": "उपहार खरीदें",
+        "book_guides": "गाइड बुक करें",
+    "head_two": "होम-स्टे",  
+       "mid_range": "मध्य स्तर",
+       "head_1":"रामशीला होमस्टे",  
+       "head_add":"अग्निकुंड, अयोध्या",
+       "night":"रात",
+    "head_three": "प्रमुख भ्रमण स्थल",  
+       "one": "श्री राम जन्मभूमि", 
+       "two": "हनुमान गढ़ी", 
+       "three":"राजद्वार मंदिर"
+
+
+
+  }

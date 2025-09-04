@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+<style>
+  
+</style>
+
+  <body style="background-image: url('/app-assets/img/services/Rectangle.png') !important;">
+    <div class="inner-header affix">
+        <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/about.png" style="height: 57px;;"></h3>
+
+    </div>
+
+      <main class="main1">
+        <section class="py-0 ">
+          <div class="container-fluid">
+            <div class="anly-bg"
+              style=" padding:0px;   box-shadow: 0px 0px 0px 0px #eee;background-color: transparent;">
+              <div id="" class="carousel slide" data-ride="carousel" data-interval="3000">
+                <ol class="carousel-indicators">
+                  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                </ol>
+
+                <div class="carousel-inner" role="listbox" style="border-radius: 10px;">
+                  <div class="item active">
+                    <img src="/app-assets/img/slider/aboutslider1.png" class="img-responsive"
+                      style="border-radius: 12px; height: 180px; width: 100%;">
+                  </div>
+                  
+
+                </div>
+
+              
+               </div>
+             </div>
+
+             <div class="tbsss">
+              <div class="one">Overview</div>
+                  <div class="one">History</div>
+                  <div class="one">Present</div>
+                  <div class="one">Tourism</div>
+               </div>
+                  <div class="clear"></div>
+                  <hr style="margin: 10px 10px;">
+
+                  <div class="Overview">
+                    <p>Ayodhya is a city situated on the banks of holy river Saryu. In the Indian state of Uttar Pradesh, It is the headquarter of Ayodhya District and Ayodhya division. Ayodhya, also known as Saket, is an ancient city of India, is the birthplace of Bhagwan Shri Ram and setting of the great epic Ramayana.</p>
+                     <h4 >Best Time to Visit</h4>
+                     <div class="besttimdiv">
+                      <h4>Nov-Mar</h4>
+                      <h5 style="color: #d9814e;">Average Season</h5>
+                      <ul>
+                        <li><i class="fa fa-cloud"  style="margin-bottom: 0px;"></i><span>Pleasant weather, clear skies and cool &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sea breeze in the mornings and evenings</span></li>
+                        <li><i class="fa fa-users"></i>More Crowd</li>
+                        <li><i class="fa fa-eye"></i>Nightlife, ghats, festival</li>
+                      </ul>
+
+                     </div>
+
+                     
+                  </div>
+
+                  <div class="Histroy">
+                    <p>Ayodhya is a city situated on the banks of the holy river Saryu in Uttar Pradesh, serving as the headquarters of Ayodhya District and division. Also known as Saket, Ayodhya is the ancient birthplace of Bhagwan Shri Ram and the setting of the epic Ramayana. Mentioned in the Atharva Veda, it was the capital of the Kosala Kingdom during Shri Ram's era. Ayodhya later became a significant center for Buddhism and Jainism, with several temples and stupas constructed. It flourished under the Gupta Empire as a hub of trade and culture. Despite cultural shifts in the medieval period, it remained a key Hindu religious site. In modern times, Ayodhya gained prominence due to the Ram Janmabhoomi dispute, culminating in the 2019 Supreme Court verdict allowing a Ram temple's construction.</p>
+                  </div>
+
+                  <div class="Present">
+                    <p>Coming Soon...</p>
+                  </div>
+                  <div class="Tourism">
+                    <p>Coming Soon...</p>
+                  </div>
+
+            
+         
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+
+<script>
+$(document).ready(function(){
+	$(".Histroy").hide();
+	$(".Present").hide();
+  $(".Tourism").hide();		
+	$(".one").eq(0).addClass("active");
+	$(".one").click(function(){
+		$(".one").removeClass("active");
+	
+		$(".Overview").hide();
+	$(".Histroy").hide();
+	$(".Present").hide();
+  $(".Tourism").hide();
+	var aval=	$(this)[0].innerText;	
+	$("."+aval).show();
+	$(this).addClass("active");	
+});
+});
+
+</script>

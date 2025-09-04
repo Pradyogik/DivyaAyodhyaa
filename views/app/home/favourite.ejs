@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+  <body>
+    <div class="inner-header affix">
+      <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a>
+        <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png">
+      </h3>
+
+    </div>
+
+    <main class="main1">
+      <section class="py-0 ">
+        <div class="container-fluid">
+
+          <% if(homestayFavorite.length>0)
+            {
+            for (let l of homestayFavorite) {
+            stayhomeimageUrl = stayhomeimageUrl;
+            if (l.mark_as_main == 1) {
+            var imagepath = stayhomeimageUrl + l.image_path;
+
+            }
+
+            else {
+            var imagepath = stayhomeimageUrl + l.image_path;
+
+            }
+            %>
+
+           
+              <div class="top-left50"  id="property_<%= l.id %>">
+              
+                <h5>
+                  <%=l.property_typesss %>
+                </h5>
+              </div>
+             
+              <div class="mainsearchdiv" id="property1_<%= l.id %>">
+             
+                <div class="mainsearchdivimg">
+                  <img src="<%= imagepath %>">
+                </div>
+                <a href="/homestay?search=<%=  l.property_name %>" style="width: 100%;">
+                <div class="hedmainsearchdivimg">
+                  <h3><%=l.property_name %></h3>
+                  <h4><i class="fa fa-map-marker " style="color: #eb6453;"></i>&nbsp;<%=l.address %></h4>
+                </div>
+              </a>
+              <div class="menuss-container">
+                <div class="menuss">
+                    <div class="menuss-dots" onclick="toggleMenu('<%= l.id %>')">⋮</div>
+                    <div class="menuss-options" id="menuOptions_<%= l.id %>">
+                        <div class="menuss-option" onclick="removehomefavouriteItem('<%= l.id %>')">Remove</div>
+                       
+                    </div>
+                </div>
+            </div>
+              </div>
+           
+
+            <% } } else{ %>
+              <div style="margin-top: 30%;">
+                <center>
+                  <img src="/app-assets/img/services/favourite.png" style="height: 200px;">
+                  <h4>No Favourite to show!</h4>
+                  <h5>You don't have any favourites <br>explore now and book your stay.</h5>
+                  <a href="/" class="btn btn-danger"> Explore</a>
+                </center>
+              </div>
+              <% } %>
+
+
+
+
+        </div>
+      </section>
+    </main>
+
+
+    <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+<script>
+  function toggleMenu(propertyId) {
+   // Close any currently open menu
+   var menuOptions = document.querySelectorAll('.menuss-options');
+    menuOptions.forEach(function(menu) {
+        if (menu.id !== `menuOptions_${propertyId}`) {
+            menu.style.display = 'none';
+        }
+    });
+
+    // Toggle the selected menu
+    var selectedMenu = document.getElementById(`menuOptions_${propertyId}`);
+    selectedMenu.style.display = selectedMenu.style.display === 'block' ? 'none' : 'block';
+}
+
+</script>
+<script>
+  // Close the menu if clicked outside
+window.onclick = function(event) {
+    if (!event.target.matches('.menuss-dots')) {
+        var menuOptions = document.querySelectorAll('.menuss-options');
+        menuOptions.forEach(function(menu) {
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        });
+    }
+}
+</script>
+<script>
+  function removehomefavouriteItem(propertyId)
+  {
+    if(propertyId)
+    {
+      fetch('/homestayremove-favourite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ property_id: propertyId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                new Toasteur("top-center", 2000).success(data.message, 'Success!');
+                // Remove the property container from the DOM
+                var propertyContainer = document.getElementById(`property_${propertyId}`);
+                var propertyContainer1 = document.getElementById(`property1_${propertyId}`);
+                if (propertyContainer) {
+                    propertyContainer.remove();
+                }
+                if (propertyContainer1) {
+                    propertyContainer1.remove();
+                }
+                // Check if any menu containers are left
+                var remainingContainers = document.querySelectorAll('.menuss-container');
+                if (remainingContainers.length === 0) {
+                    // If no containers are left, reload the page
+                    window.location.reload();
+                }
+            } else {
+                new Toasteur("top-center", 2000).error(data.message, 'Error!');
+            }
+                });
+            return false;
+    }
+    else{
+      new Toasteur("top-center", 2000).error('Something Went Wrong!', 'Error!');
+    }
+  }
+</script>

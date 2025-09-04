@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/profile"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+  
+
+      <main class="main1">
+        <section class="py-0 ">
+        
+          <div class="container-fluid">
+       
+
+            <div class="schema-faq wp-block-yoast-faq-block">
+                <div class="schema-faq-section" id="faq-question1"><strong class="schema-faq-question"><b>1.</b> What is your Return Policy? </strong>
+                    <p class="schema-faq-answer">If you are not satisfied with your stay, please contact us immediately. We will do our best to resolve any issues. Refunds are typically provided for cancellations made according to our cancellation policy.</p>
+                </div>
+                <div class="schema-faq-section" id="faq-question2"><strong class="schema-faq-question"><b>2.</b> Can I cancel my booking? </strong>
+                    <p class="schema-faq-answer">Yes, you can cancel your booking. Please check our cancellation policy for details. Generally, you can get a full refund if you cancel at least 8days to 10 days before your check-in date.</p>
+                </div>
+
+                <div class="schema-faq-section" id="faq-question2"><strong class="schema-faq-question"><b>3.</b> What payment methods do you accept? </strong>
+                  <p class="schema-faq-answer">We accept various payment methods including credit/debit cards, online bank transfers, and popular online payment platforms.</p>
+              </div>
+              <div class="schema-faq-section" id="faq-question2"><strong class="schema-faq-question"><b>4.</b> Can I extend my booking?  </strong>
+                <p class="schema-faq-answer">Yes, you can extend your booking if there is availability. Please contact us as soon as possible to arrange this.</p>
+            </div>
+            <div class="schema-faq-section" id="faq-question2"><strong class="schema-faq-question"><b>5.</b> How can I contact your customer support?  </strong>
+              <p class="schema-faq-answer">You can contact our customer support through phone, email, or the contact form on our website. We are here to help you with any questions or issues.</p>
+          </div>
+          <div class="schema-faq-section" id="faq-question2"><strong class="schema-faq-question"><b>6.</b> Can I cancel my order if it has been placed? </strong>
+            <p class="schema-faq-answer">Yes, you can cancel your order (booking) if it has been placed. Please refer to our cancellation policy for the details and any potential fees.</p>
+        </div>
+        <div class="schema-faq-section" id="faq-question2"><strong class="schema-faq-question"><b>7.</b> Can I Trust on Divya Ayodhya?</strong>
+          <p class="schema-faq-answer">Divya Ayodhya is a venture of Ayodhya Development Authority so it is 100% Trustable.</p>
+      </div>
+                
+            </div>
+
+
+
+           
+            
+         
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+<script>
+  
+
+jQuery(document).ready(function() {
+  jQuery(".wp-block-yoast-faq-block .schema-faq-section:first-child").addClass("active").children(".schema-faq-answer").slideDown();//Remove this line if you dont want the first one to be opened automatically.
+  jQuery(".schema-faq-question").on("click", function(){
+    if( jQuery(this).parent().hasClass("active") ){
+      jQuery(this).next().slideUp();
+      jQuery(this).parent().removeClass("active");
+    }
+    else{
+      jQuery(".schema-faq-answer").slideUp();
+      jQuery(".schema-faq-section").removeClass("active");
+      jQuery(this).parent().addClass("active");
+      jQuery(this).next().slideDown();
+    }
+  });
+});
+</script>

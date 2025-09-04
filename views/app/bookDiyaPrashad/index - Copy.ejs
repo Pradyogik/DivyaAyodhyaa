@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    <% if(error.length>0){ %>
+        <script>new Toasteur("top-center", 3000).error(" <%= error %>", 'Error!');</script>
+        
+        
+        <% } %>
+        
+        <% if(success.length>0){ %>
+        <script>new Toasteur("top-center", 3000).success(" <%= success %>", 'Success!');</script>
+        
+        
+        <% } %>
+  
+
+      <main class="main1">
+        <section class="py-0 ">
+        
+          <div class="container-fluid">
+            <div class="">
+				<form name="booking" id="booking"  class="contact-form"  method="post" action="/createGuideBooking">
+					
+					<div class="card" style="box-shadow: none;">
+						
+						<div class="card-body">
+							<div class="">
+								<div class="col-md-3">
+									<div class="">
+										<label for="booking_type">Booking Type <span style="font-size: 20px;color: red;">*</span></label>
+										<select class="form-control"  name="booking_type" id="booking_type" onchange="changeBookingType(value)">
+											<option value="">---Select Booking Type---</option>
+											<% if(book_type.length > 0)
+												{ 
+												for (let b of book_type)
+												{ 	
+															
+												%>
+											<option value="<%= b.id %>"><%= b.booking_type %></option>
+											
+											<% } } %>
+										</select>
+									</div>
+								</div>
+								<!-- <div class="col-md-3">
+									<div class="">
+										<label for="booking_date">Booking Date <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="date"  id="booking_date" name="booking_date" min="<%= formatDateymd(managedate(1)) %>" max="<%= formatDateymd(managedate(31)) %>" value="<%= formatDateymd(managedate(1)) %>" class="form-control" placeholder="Booking Date">
+									</div>
+								</div> -->
+								<div class="col-md-3">
+									<div class="">
+										<label for="booking_type">Start Point <span style="font-size: 20px;color: red;">*</span></label>
+										<select class="form-control"  name="start_point" id="start_point">
+											<option value="">---Select Start Point---</option>
+											<% if(pickuppoint.length > 0)
+												{ 
+												for (let p of pickuppoint)
+												{ 	
+															
+												%>
+											<option value="<%= p.id %>"><%= p.name %></option>
+											
+											<% } } %>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="">
+										<label for="start_time">Select Slot <span style="font-size: 20px;color: red;">*</span></label>
+										
+										<select class="form-control" name="slot" id="slot" onchange="getprice(value)">
+											<option value=""></option>
+											
+										</select>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="">
+										<label for="end_time">Booking Fees &#x20B9; <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="booking_fee" id="booking_fee" value="" class="form-control"  readonly />
+									</div>
+								</div>
+
+								<%
+                                if(!session.mobile)
+                                {
+                                  var mobile ='';
+                                  var mobilevalue = '';
+
+                                }
+                                else{
+
+                                    var mobile ='readonly';
+                                    var mobilevalue = session.mobile;
+
+                                }
+                                if(!session.email)
+                                {
+
+                                    var email ='';
+                                   var emailvalue = '';
+                                    
+
+                                }
+                                else
+                                {
+                                    var email ='readonly';
+                                   var emailvalue = session.email;
+
+                                }
+                                %>
+								<div class="col-md-4">
+									<div class="">
+										<label for="end_time">Full Name <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="name" id="name" placeholder="Enter Full Name " minlength="1" maxlength="50" class="form-control" onkeydown="return alphaOnly(event);">
+									</div>
+								</div>
+
+								<div class="col-md-2">
+									<div class="">
+										<label for="end_time">Mobile <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="mobile" id="mobile" placeholder="Enter Mobile " minlength="10" maxlength="10" value="<%= mobilevalue %>"
+										onkeypress='return event.charCode >= 48 && event.charCode <= 57' onchange="return validateMobile()" class="form-control" <%= mobile %>>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="">
+										<label for="end_time">Email <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="email" id="email" placeholder="Enter Email ID.."  value="<%= emailvalue %>" class="form-control" <%= email %>>
+									</div>
+								</div>
+								<div class="col-md-12" >
+									<div class="">
+										<label for="end_time">Address <span style="font-size: 20px;color: red;">*</span></label>
+										<textarea type="text" name="address" id="address" placeholder="Enter Address" rows="1" class="form-control" ></textarea>
+									</div>
+								</div>
+                                <br>
+								<div class="col-md-10">
+								
+                                    <center><input class="btn btn-info " value="Proceed to Payment"  onclick="return validatebooking()" style="    width: 100%;"></center>
+                                </div>
+								
+							</div>
+							
+						</div>
+					</div>
+            	</form>
+			</div>
+
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+
+<script>
+	
+    function validatebooking() {
+        var booking_type = document.getElementById('booking_type').value;
+        var booking_date = document.getElementById('booking_date').value;
+        var start_point = document.getElementById('start_point').value;
+        var slot = document.getElementById('slot').value;
+        var booking_fee = document.getElementById('booking_fee').value;
+		    var name = document.getElementById('name').value;
+        var mobile = document.getElementById('mobile').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+
+        if (booking_type == '') {
+            new Toasteur("top-center", 2000).error("Booking Type  is Required", 'Error!');
+            $('#booking_type').focus();
+            return false;
+        }
+
+        if (booking_date == '') {
+            new Toasteur("top-center", 2000).error("Booking Date is Required", 'Error!');
+            $('#booking_date').focus();
+            return false;
+        }
+
+		if (start_point == '') {
+            new Toasteur("top-center", 2000).error("Start Point is Required", 'Error!');
+            $('#start_point').focus();
+            return false;
+        }
+		if (slot == '') {
+            new Toasteur("top-center", 2000).error("Slot is Required", 'Error!');
+            $('#slot').focus();
+            return false;
+        }
+		if (booking_fee == '') {
+            new Toasteur("top-center", 2000).error("Booking Fee is Required", 'Error!');
+            $('#booking_fee').focus();
+            return false;
+        }
+
+		if (mobile == '') {
+            new Toasteur("top-center", 2000).error("Mobile No.  is Required", 'Error!');
+            $('#mobile').focus();
+            return false;
+        }
+        if(mobile.length < 10)
+           {
+            new Toasteur("top-center", 2000).error("mobile Must be 10 Digits Long", 'Error!'); 
+            $('#mobile').focus();
+            return false;
+            }
+            if(mobile.length > 10)
+            {
+            new Toasteur("top-center", 2000).error("Mobile Not Grater than 10 Digits Long", 'Error!'); 
+            $('#mobile').focus();
+            return false;
+            }
+
+			if (name == '') {
+            new Toasteur("top-center", 2000).error("Full Name is Required", 'Error!');
+            $('#name').focus();
+            return false;
+        }
+
+            if (email == '') {
+            new Toasteur("top-center", 2000).error("Email  ID is Required", 'Error!');
+            $('#email').focus();
+            return false;
+            }
+
+            if (address == '') {
+            new Toasteur("top-center", 2000).error("Address is Required", 'Error!');
+            $('#address').focus();
+            return false;
+            }
+
+          else {
+
+            $("#booking").submit();
+
+            return true;
+        }
+
+    }
+
+</script>
+<script>
+	 function changeBookingType(id)
+	{
+
+		$.ajax({
+           type: 'get', // Type of request to be send, called as method
+           url: '/getBookGuideValue/?booking_type='+id, //  Url to which the request is send
+           dataType: 'html',
+		   success: function (response) { // Callback function if the request is successful
+            //alert(response);
+            if (response) {
+                //alert(response);
+                $('#slot').html(response);
+            } else {
+                $('#slot').html(response);
+            }
+            }
+		});
+		
+
+	}
+
+
+
+	function getprice(id)
+	{
+
+		$.ajax({
+           type: 'get', // Type of request to be send, called as method
+           url: '/getpricebyslot/?slot_id='+id, //  Url to which the request is send
+           dataType: 'html',
+		   success: function (response) { // Callback function if the request is successful
+            //alert(response);
+            if (response) {
+                //alert(response);
+                $('#booking_fee').val(response);
+            } else {
+                $('#booking_fee').val(response);
+            }
+            }
+		});
+		
+
+	}
+</script>
+<script>
+
+	function alphaOnly(event) {
+		var key = event.keyCode;
+		return ((key >= 65 && key <= 90) || key == 8 || key == 32);
+		};
+		</script>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+    <style>
+        body {
+            background: url('/app-assets/img/services/login_bg.jpg') no-repeat 0px 0px !important;
+
+            height: 100% !important;
+            background-repeat: no-repeat !important;
+            background-position: top !important;
+
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border: 2px solid red
+        }
+
+        .form-control {
+            padding: 6px 0px;
+        }
+    </style>
+
+    <body>
+
+
+        <main class="loginamain">
+            <section class="py-0 ">
+                <a href="<%= referralLink%>" class="backlogin"> <i class="fa fa-angle-left"></i>&nbsp; Back</a>
+
+                <div class="card-body  text-md-start" style="margin-top: 140%;">
+
+                    <div class="card">
+                        <form id="form_login" onsubmit="return sendOTP()">
+                            <div class="form">
+                                <center>
+                                    <h3>Sign in</h3>
+                                </center>
+
+
+                                <div class="input-field">
+                                    <i class="fa fa-mobile"></i>
+                                    <input type="number" name="mobile" id="mobile" minlength="10" maxlength="10"
+                                        placeholder="Enter Your 10-Digits Mobile Number" autocomplete="new_mobile"
+                                        autofocus onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+                                </div>
+                                <input type="hidden" id="referralLink" name="referralLink" value="<%= referralLink%>">
+
+
+                                <input type="submit" name="btnLogin" value="Get OTP" class="button">
+                                <span class="loginor">or</span>
+                                <a href="/register" class="logIN">Sign up</a>
+
+                                <!-- <p>Don't have an account? <a href="#">Signup now</a></p> -->
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+
+    </body>
+
+
+</html>
+<!-- opt popup -->
+<div id="otpPopup" class="popup">
+    <div class="popup-content" style="width: 100%;">
+        <h2>Enter OTP</h2>
+        <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2" style="    margin: 10px 0px;">
+            <input class="m-2 text-center form-control rounded otp-input" type="number" name="otp1" id="otp1"
+                maxlength="1" autofocus onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                oninput="moveFocus(1)">
+            <input class="m-2 text-center form-control rounded otp-input" type="number" name="otp2" id="otp2"
+                maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninput="moveFocus(2)">
+            <input class="m-2 text-center form-control rounded otp-input" type="number" name="otp3" id="otp3"
+                maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninput="moveFocus(3)">
+            <input class="m-2 text-center form-control rounded otp-input" type="number" name="otp4" id="otp4"
+                maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninput="moveFocus(4)">
+            <input class="m-2 text-center form-control rounded otp-input" type="number" name="otp5" id="otp5"
+                maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninput="moveFocus(5)">
+            <input class="m-2 text-center form-control rounded otp-input" type="number" name="otp6" id="otp6"
+                maxlength="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' oninput="moveFocus(6)">
+        </div>
+        <button onclick="verifyOTP()" class="btn btn-success">Verify OTP</button>
+    </div>
+
+</div>
+
+
+<script>
+    var referralLink = document.getElementById('referralLink').value;
+    function sendOTP() {
+        var mobile = document.getElementById('mobile').value;
+        // Define a regex pattern for a valid 10-digit mobile number
+        const mobilePattern = /^[0-9]{10}$/;
+
+        if (mobile == '' || !mobilePattern.test(mobile)) {
+            new Toasteur("top-center", 2000).error("Enter a valid mobile number", 'Error!');
+            return false;
+        }
+
+        if (mobile.length > 10) {
+            new Toasteur("top-center", 2000).error("Enter a valid mobile number", 'Error!');
+            return false;
+        }
+        if (mobile.length < 10) {
+            new Toasteur("top-center", 2000).error("Enter a valid mobile number", 'Error!');
+            return false;
+        }
+        else {
+
+            fetch('/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mobile: mobile, referralLink: referralLink })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('otpPopup').style.display = 'block';
+                        document.getElementById('otp1').focus();
+                    } else {
+                        new Toasteur("top-center", 3000).error(data.message, 'Error!');
+                        window.location.href = '/register';
+                    }
+                });
+            return false;
+        }
+
+    }
+
+
+
+</script>
+
+<script>
+
+
+    function verifyOTP() {
+        const otp = [
+            document.getElementById('otp1').value,
+            document.getElementById('otp2').value,
+            document.getElementById('otp3').value,
+            document.getElementById('otp4').value,
+            document.getElementById('otp5').value,
+            document.getElementById('otp6').value,
+        ].join('');
+        var mobile = document.getElementById('mobile').value;
+
+        if (otp.length !== 6) {
+            new Toasteur("top-center", 2000).error("Enter 6-digits OTP Number", 'Error!');
+            return false;
+        }
+        else if (mobile == '') {
+            new Toasteur("top-right", 2000).error("Something Went Wrong", 'Error!');
+            return false;
+        }
+        else {
+
+
+
+            fetch('/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ otp: otp, mobile: mobile, referralLink: referralLink })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+
+                        new Toasteur("top-center", 2000).success('Login successful', 'Success!');
+                        window.location.href = data.referralLink;
+                    } else {
+                        new Toasteur("top-center", 2000).error(data.message, 'Error!');
+                        clearOtpFields();
+                    }
+                });
+        }
+    }
+</script>
+<script>
+    function clearOtpFields() {
+        document.querySelectorAll('.rounded').forEach(input => input.value = '');
+    }
+
+    function moveFocus(currentBox) {
+        //alert(currentBox);
+        const nextBox = currentBox + 1;
+        const otpInput = document.getElementById(`otp${currentBox}`);
+        if (otpInput.value.length === 1 && nextBox <= 6) {
+            document.getElementById(`otp${nextBox}`).focus();
+        }
+
+        if (currentBox === 6 && otpInput.value.length === 1) {
+            verifyOTP(); // Automatically verify OTP when the last box is filled
+        }
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        function OTPInput() {
+
+            const inputs = document.querySelectorAll('#otp > *[id]');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('keydown', function (event) {
+                    if (event.key === "Backspace" || event.key === "Delete") {
+                        inputs[i].value = '';
+                        if (i !== 0) inputs[i - 1].focus();
+                    } else {
+                        if (i === inputs.length - 1 && inputs[i].value !== '') {
+                            return true;
+                        }
+                        else if (event.keyCode >= 48 && event.keyCode <= 57) {
+                            inputs[i].value = event.key;
+                            if (i !== inputs.length - 1) inputs[i + 1].focus();
+                            event.preventDefault();
+                        }
+                        else if (event.keyCode >= 96 && event.keyCode <= 105) {
+                            inputs[i].value = event.key;
+                            if (i !== inputs.length - 1) inputs[i + 1].focus();
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+        }
+        OTPInput();
+
+
+    });
+</script>
+<script>
+    document.getElementById('mobile').addEventListener('keyup', function (event) {
+        var mobile = document.getElementById('mobile').value;
+        var mobileInput = event.target;
+
+
+        if (mobile.length > 10) {
+            new Toasteur("top-center", 2000).error("Enter a valid mobile number", 'Error!');
+            mobileInput.value = mobile.slice(0, 10);
+            return false;
+        }
+    });
+</script>

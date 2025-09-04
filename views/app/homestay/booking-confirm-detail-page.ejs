@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+<link href="/app-assets/css/homestay.css" rel="stylesheet"/>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/stay-ayodhya/booking/<%= encrypt(hotellist[0].id) %>);%>/<%= encrypt(hotellist[0].property_id) %>);%>"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+    <% if(error.length>0){ %>
+        <script>new Toasteur("top-center", 3000).error(" <%= error %>", 'Error!');</script>
+        
+        
+        <% } %>
+        
+        <% if(success.length>0){ %>
+        <script>new Toasteur("top-center", 3000).success(" <%= success %>", 'Success!');</script>
+        
+        
+        <% } %>
+     <main class="main1"  style="    margin-top: 0px; margin-bottom: 40px;">
+        
+<section  style="    background-color: #fff;">
+    <div class="container">
+        <div class="st-checkout-page style-2">
+            <div class="row">
+                <div class="col-lg-4 col-12 order-1 order-sm-2">
+                    <h3 class="title" style="">&nbsp;</h3>
+                    <div class="cart-info st-border-radius" id="cart-info" style="border: 2px solid #DEDEDE;">
+                        
+                                <div class="price-details">
+                                    <h5>Price details</h5>
+                                    <div class="item">
+                                        <span class="label">
+                                        Room Price/night </span>
+                                        <span class="value">
+                                        ₹ <%= sanpreetObj.pricePerNigt %> </span>
+                                    </div>
+                                </div>
+                                <div class="total-section">
+                                    <ul>
+                                        <li><span class="label"><%= sanpreetObj.requiredRoom %> Rooms x <%= sanpreetObj.numberOfNights %> Night</span><span class="value">₹ <%= sanpreetObj.roomAmt %></span></li>
+                                        <li><span class="label">GST</span><span class="value">₹ 0</span></li>
+                                         <li><span class="label">Other tax</span><span class="value">₹ 0</span></li>
+                                        <li class="payment-amount">
+                                            <span class="label">Amount to be paid</span>
+                                            <span class="value">₹ <%= sanpreetObj.totAmt %></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                  <!-- <div class="coupon-section">
+                                    <h5>Coupon Code</h5>
+                                    <form method="post" action="https://divyayodhya.com/frontend_assets/checkout/">
+                                        <div class="form-group">
+                                            <input id="field-coupon_code" value type="text" name="coupon_code" />
+                                            <input type="hidden" name="st_action" value="apply_coupon">
+                                            <button type="submit" class="btn btn-primary wp-block-search__button">APPLY</button>
+                                        </div>
+                                    </form>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 col-12 order-2 order-sm-1">
+                            
+
+                            <div class="cart-info st-border-radius" style="border: 2px solid #DEDEDE;">
+                                <!-- <h5> details</h5> -->
+                                <div class="st-review-box-top d-flex align-items-center">
+                                    <div class="service-section ">
+                                        <div class="service-left">
+                                            <a href="#">
+                                                <img src="<%= stayhomeimageUrl+ hotellist[0].room_image %>" class="img-responsive wp-post-image img-thumbnail" alt="TravelerWP" decoding="async" loading="lazy" style="width: 100%;height: 150px;"> </a>
+                                            </div>
+                                            <div class="service-right">
+                                                
+                                                <h3 class="title"><%= postdetail.name %> (<%= postdetail.mobile %>) </h3>
+                                                
+                                                <h3 class="title"><a href="#"><%= hotellist[0].property_name %> (<%= hotellist[0].room_category_name %>) </a></h3>
+                                                <p class="address"><i class="stt-icon-location1"></i><%= hotellist[0].about %></p><p class="address">&nbsp;&nbsp;Ayodhya</p>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="prptChkCont appendBottom10" style="display: flow;">
+                                        <div class="prptChk forReview">
+                                            <div class="prptChk__col">
+                                                <h5 class="info-heading">CHECK IN</h5>
+                                                <p class="prptChk__date" style="font-size: 14px; line-height: 19px;"><b><%= postdetail.checkin %></b></p>
+                                                <p class="blackText appendTop3">11 AM</p>
+                                            </div>
+                                            <!-- <div class="prptChk__nights"><b> Nights</b></div> -->
+                                            <div class="prptChk__col last">
+                                                <h5 class="info-heading">CHECK OUT</h5>
+                                                <p class="prptChk__date" style="font-size: 14px; line-height: 19px;"><b><%= postdetail.checkout %></b></p>
+                                                <p class="blackText appendTop3">12 PM</p>
+                                            </div>
+                                        </div>
+                                         
+                                        
+                                            <p class="font16 blackText">
+                                                <span class="latoBlack"><b><%= sanpreetObj.numberOfNights %></b></span>&nbsp;<span>Nights | </span>
+                                                <span class="latoBlack"><b><%= sanpreetObj.numOfPerson %></b></span>&nbsp;Guests&nbsp;| <span><b><%= sanpreetObj.requiredRoom %></b> Rooms</span></p>
+                                                
+                                            </div>
+                                      
+                                        <form name="booking" id="booking" method="post" action="/stay-ayodhya/postbooking"  class="book-depature-6 signin-form">
+                                            <input type="hidden" name="proceedtipay" value="proceedtipay">
+                                            <input type="hidden" name="room_id" value="<%= sanpreetObj.room_id %>">
+                                            <input type="hidden" name="property_id" value="<%= sanpreetObj.property_id %>">
+                                            <input type="hidden" name="name"  value="<%= postdetail.name %>">
+                                            <input type="hidden" name="mobile" value="<%= postdetail.mobile %>">
+                                            <input type="hidden" name="email"  value="<%= postdetail.email %>">
+                                            <input type="hidden" name="address"  value="<%= postdetail.address %>">
+                                            <input type="hidden" name="checkin" value="<%= postdetail.checkin %>">
+                                            <input type="hidden" name="checkout" value="<%= postdetail.checkout %>">
+                                            <input type="hidden" name="adults" value="<%= sanpreetObj.numOfPerson %>">
+                                            <input type="hidden" name="child" value="<%= postdetail.child %>">
+                                            <input type="hidden" name="number_of_room" value="<%= sanpreetObj.requiredRoom %>">
+                                            <input type="hidden" name="price_per_night" value="<%= sanpreetObj.pricePerNigt %>">
+                                            <input type="hidden" name="total_night" value="<%= sanpreetObj.numberOfNights %>">
+                                            <input type="hidden" name="gstAmt" value="<%= sanpreetObj.gstAmt %>">
+                                            <input type="hidden" name="otherAmt" value="<%= sanpreetObj.otherAmt %>">
+
+                                            <input type="hidden" name="total_payable_amount" value="<%= encrypt(sanpreetObj.totAmt) %>">
+                                       <center><button type="submit"class="ml-3 book btn btn-secondary btn-style">Proceed To Pay</button></center> 
+                                       </form>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</section>
+        
+    </main>
+
+
+    <%- include('../layouts/footer') %>
+</body>
+
+
+</html>
+

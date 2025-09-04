@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+    <div id="navbar-animmenu" >
+      <ul class="show-dropdown main-navbar">
+          <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+          <li  class="active">
+              <a href="/booking"><i class="fa fa-hotel"></i>Hotels</a>
+          </li>
+          <li>
+            <a href="/diya-booking-history"><i class="fa fa-user"></i>Diya And Prashad</a>
+          </li>
+          <li>
+              <a href="/tour-package-booking-history"><i class="fa fa-gift"></i>Tour Packages</a>
+          </li>
+          <li>
+              <a href="/cabs-booking-history"><i class="fa fa-car"></i>Cabs</a>
+          </li>
+          <li>
+              <a href="guide-booking-history"><i class="fa fa-user"></i>Guide</a>
+          </li>
+          
+          
+      </ul>
+  </div>
+
+      <main class="main1" style="margin-top: 0px;margin-bottom: 70px;">
+        <section class="py-0 ">
+        
+          <div class="container-fluid">
+          
+            <% if(hotelbooking.length> 0)
+            {
+            for (let l of hotelbooking)
+            {
+
+            %>
+            <h4>Upcoming</h4>
+            <hr>
+            <div class="hotelbookinghistory ">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <img src="<%= stayhomeimageUrl+ l.room_image %>" class="img-thumbnail"  >
+
+                  </div>
+                  <div class="col-xs-8" style="    padding-left: 0px;">
+                  <h5><%= l.property_name %><spna>(<%= l.room_title %>)</spna></h5>
+                  <h4><i class="fa fa-user " style="    color: #eb6453;"></i> <%= l.visitor_name %></h4>
+                  <h4> <i class="fa fa-calendar " style="    color: #eb6453;"></i> <%= formatDatedmy(l.check_in_date) %> <b>-</b> <%= formatDatedmy(l.check_out_date) %> </h4>
+                  <h4><i class="fa fa-users " style="    color: #eb6453;"></i> <%= l.number_of_adults %> Adults <b>-</b> <%= l.number_of_child %> Childs</h4>
+                
+                 </div>
+                 <h4><i class="fa fa-home " style="    color: #eb6453;"></i> <strong>No.of Room : </strong> <%= l.number_of_room %> / <strong>Total Night : </strong>  <%= l.total_night %></h4>
+                 <h4><i class="fa fa-inr " style="    color: #eb6453;"></i> <strong>Paid Amount : </strong><%= l.total_payable_amount %>  </h4>
+                 <h4><i class="fa fa-calendar " style="    color: #eb6453;"></i> <strong>Booking Created Date : </strong><%= formatDatedmyhis(l.created_date) %>  </h4>
+                 <div class="col-xs-12">
+                  <p><i class="fa fa-map-marker " style="    color: #eb6453;"></i> <%= l.address %> </p>
+                    
+                  <ul class="bookingnavigation">
+                    <li><a href="tel:<%= l.contact_person_mobile %>" target="_blank" class=""><i class="fa fa-phone "></i> Call Hotel</a></li>
+                    <li><a href="https://www.google.com/maps/place/<%= encodeURIComponent(l.address) %>" ><i class="fa fa-send"></i>Get Direction </a></li>
+                    <li><a href="https://wa.me/91<%= l.contact_person_mobile %>" target="_blank" class=""><i class="fa fa-comments-o "></i>Need Help </a></li>
+                   </ul>
+                 </div>
+              </div>
+            </div>
+
+            <% } } else { %>
+
+
+            
+
+
+           <div style="margin-top: 20%;">
+            <center>
+            <img src="/app-assets/img/services/favourite.png" style="height: 200px;">
+            <h4>No Booking to show!</h4>
+            <h5>You don't have any Bookings <br>explore now and book your stay.</h5>
+            <a href="/" class="btn btn-danger"> Explore</a>
+        </center>
+           </div>
+
+           
+           <% } %>
+         
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+
+<script>
+  // ---------horizontal-navbar-menu-----------
+  var tabsNewAnim = $('#navbar-animmenu');
+		var selectorNewAnim = $('#navbar-animmenu').find('li').length;
+		var selectorNewAnim = $(".tabs").find(".selector");
+		var activeItemNewAnim = tabsNewAnim.find('.active');
+		var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+		var itemPosNewAnimLeft = activeItemNewAnim.position();
+		$(".hori-selector").css({
+			"left":itemPosNewAnimLeft.left + "px",
+			"width": activeWidthNewAnimWidth + "px"
+		});
+		$("#navbar-animmenu").on("click","li",function(e){
+			$('#navbar-animmenu ul li').removeClass("active");
+			$(this).addClass('active');
+			var activeWidthNewAnimWidth = $(this).innerWidth();
+			var itemPosNewAnimLeft = $(this).position();
+			$(".hori-selector").css({
+				"left":itemPosNewAnimLeft.left + "px",
+				"width": activeWidthNewAnimWidth + "px"
+			});
+		});
+</script>

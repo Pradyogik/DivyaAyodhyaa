@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+<link href="/app-assets/css/homestay.css" rel="stylesheet"/>
+<style>
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -30px;
+    margin-left: -30px;
+}
+</style>
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/stay-ayodhya/property-rooms/<%= encrypt(hotellist[0].property_id) %>);%>"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> Booking Page <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+    <% if(error.length>0){ %>
+        <script>new Toasteur("top-center", 3000).error(" <%= error %>", 'Error!');</script>
+        
+        
+        <% } %>
+        
+        <% if(success.length>0){ %>
+        <script>new Toasteur("top-center", 3000).success(" <%= success %>", 'Success!');</script>
+        
+        
+        <% } %>
+     <main class="main1" style="    margin-top: 40px;
+    margin-bottom: 80px;">
+        <div class="w3l-booking-top">
+            <!-- /form-16-section -->
+            <div class="booking-form-61">
+                <div class="container">
+                    <div class="booking-top-gds">
+                        <div class="booking-forms-16-info align-self">
+                            <h5>Your Booking for,  <b style="color:#ffbf00;"><%= hotellist[0].property_name %>(<%= hotellist[0].room_category_name %>)</b></h5>
+                            <p style="margin: 0;"><%= hotellist[0].description %></p>
+                        </div>
+                        <div class="form-right-inf">
+                            <div class="booking-form-content" style="padding: 1em;">
+                                <h6>Book Now</h6>
+                                <form name="booking" id="booking" method="post"  class="book-depature-6 signin-form" action="/stay-ayodhya/check-room-availability">
+                                    <input type="hidden" name="room_id" value="<%= hotellist[0].id %>">
+                                    <input type="hidden" name="property_id" value="<%= hotellist[0].property_id %>">
+                                    <input type="hidden" name="room_capacity" id="room_capacity" value="<%= hotellist[0].number_of_adults_stay %>">
+        
+                                    <div class="d-grid grid-col-2">
+                                       
+                                       <%
+                                        if(!session.mobile)
+                                        {
+                                          var mobile ='';
+                                          var mobilevalue = '';
+        
+                                        }
+                                        else{
+        
+                                            var mobile ='readonly';
+                                            var mobilevalue = session.mobile;
+        
+                                        }
+                                        if(!session.email)
+                                        {
+        
+                                            var email ='';
+                                           var emailvalue = '';
+                                            
+        
+                                        }
+                                        else
+                                        {
+                                            var email ='readonly';
+                                           var emailvalue = session.email;
+        
+                                        }
+                                        %>
+                                        <div class="hny-frm_grid">
+                                            <h5>Name<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input class="name" name="name" id="name" type="text" placeholder="Your Name" required=""  minlength="3" maxlength="30" onkeydown="return alphaOnly(event);">
+                                        </div>
+                                        <div class="hny-frm_grid">
+                                            <h5>Phone Number<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input class="phone" name="mobile" id="mobile" type="phone" placeholder="Phone Number" required="" minlength="10" maxlength="10" value="<%= mobilevalue %>"
+                                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' onchange="return validateMobile()" <%= mobile %>>
+                                        </div>
+                                        </div>
+                                        <div class="d-grid grid-col-12">
+        
+                                        <div class="hny-frm_grid">
+                                            <h5>Email<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input class="email" name="email" id="email" type="email"  required="" value="<%= emailvalue %>" placeholder="Enter Your Email ID" <%= email %>>
+                                        </div>
+        
+                                        <div class="hny-frm_grid">
+                                            <h5>Address<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input class="text" name="address" id="address" type="text" min="3" max="60" required=""  placeholder="Enter Address" >
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-md-12">
+                                        <div class="col-xs-6">
+                                        <div class="hny-frm_grid">
+                                            <h5>Check-in Date<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input class="date" name="checkin" id="checkin"  placeholder="DD-MM-YYYY" type="text" value="<%= formatDatedmy(session.availabilityParameters.checkInDate) %>" onchange="FDate()" (keydown)="disableDate()" placeholder="Date" required="">
+                                        </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                        <div class="hny-frm_grid">
+                                            <h5>Check-out Date<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input class="date" name="checkout" id="checkout" placeholder="DD-MM-YYYY" type="text" min="<%= formatDatedmy(managedate(2)) %>" max="<%= formatDatedmy(managedate(31)) %>" value="<%= formatDatedmy(session.availabilityParameters.checkOutDate) %>" onchange="TDate()" (keydown)="disableDate()" placeholder="Date" required="">
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <div class="col-xs-4">
+                                        <div class="hny-frm_grid">
+                                            <h5>Adults<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <select id="adults" name="adults" onchange="return setRoom(this.value);" required>
+                                                <option value="1" <%= session.availabilityParameters.numAdults == 1 ? 'selected' : ''%>>01</option>
+                                                <option value="2" <%= session.availabilityParameters.numAdults == 2 ? 'selected' : ''%>>02</option>
+                                                <option value="3" <%= session.availabilityParameters.numAdults == 3 ? 'selected' : ''%>>03</option>
+                                                <option value="4" <%= session.availabilityParameters.numAdults == 4 ? 'selected' : ''%>>04</option>
+                                                <option value="5" <%= session.availabilityParameters.numAdults == 5 ? 'selected' : ''%>>05</option>
+                                                <option value="6" <%= session.availabilityParameters.numAdults == 6 ? 'selected' : ''%>>06</option>
+                                            </select>
+                                        </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                        <div class="hny-frm_grid">
+                                            <h5>Children<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <select id="child" name="child" required="">
+                                                <option value="0" <%= session.availabilityParameters.numChild == 1 ? 'selected' : ''%>>0</option>
+                                                <option value="1" <%= session.availabilityParameters.numChild == 1 ? 'selected' : ''%>>01</option>
+                                                <option value="2" <%= session.availabilityParameters.numChild == 2 ? 'selected' : ''%>>02</option>
+                                                <option value="3" <%= session.availabilityParameters.numChild == 3 ? 'selected' : ''%>>03</option>
+                                                <option value="4" <%= session.availabilityParameters.numChild == 4 ? 'selected' : ''%>>04</option>
+                                                <option value="5" <%= session.availabilityParameters.numChild == 5 ? 'selected' : ''%>>05</option>
+                                                <option value="6" <%= session.availabilityParameters.numChild == 6 ? 'selected' : ''%>>06</option>
+                                            </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-xs-4">
+                                        <div class="hny-frm_grid">
+                                            <h5>Rooms<span style="font-size: 20px;color: red;">*</span></h5>
+                                            <input type="number" name="num_room" id="num_room" value="<%=session.availabilityParameters.numRoom %>" min="<%=session.availabilityParameters.numRoom %>" onkeyup="return chkRoom();">
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                   <center style="margin-top: 10px;"><button class="btn btn-style btn-secondary book mt-3"  onclick="return validatebooking()" style="padding: 8px 30px 10px;">Book Now</button></center> 
+                                    <!-- <p class="already">You are booking as guest.</p> -->
+        
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <%- include('../layouts/footer') %>
+</body>
+
+
+</html>
+
+
+<script>
+
+    function alphaOnly(event) {
+        var key = event.keyCode;
+        return ((key >= 65 && key <= 90) || key == 8 || key == 32);
+        };
+        </script>
+    
+        <script>
+    
+    function validateMobile()
+      {
+    
+        var mobile = document.getElementById('mobile').value;
+        
+        if(mobile =='')
+        {
+        new Toasteur("top-center", 5000).error("mobile required", 'Error!');
+        $('#mobile').focus();
+          return false;
+        }
+        if(mobile.length < 10)
+        {
+        new Toasteur("top-center", 5000).error("mobile Must be 10 Digits Long", 'Error!'); 
+        $('#mobile').focus();
+          return false;
+        }
+        if(mobile.length > 10)
+        {
+        new Toasteur("top-center", 5000).error("Mobile Not Grater than 10 Digits Long", 'Error!'); 
+        $('#mobile').focus();
+          return false;
+        }
+    
+    }
+    
+        function validatebooking() {
+            var name = document.getElementById('name').value;
+            var mobile = document.getElementById('mobile').value;
+            var email = document.getElementById('email').value;
+            var address = document.getElementById('address').value;
+            var checkin = document.getElementById('checkin').value;
+            var checkout = document.getElementById('checkout').value;
+            var adults = document.getElementById('adults').value;
+            var child = document.getElementById('child').value;
+    
+            if (name == '') {
+                new Toasteur("top-center", 2000).error("Name is Required", 'Error!');
+                $('#name').focus();
+                return false;
+            }
+    
+            if (mobile == '') {
+                new Toasteur("top-center", 2000).error("Mobile is Required", 'Error!');
+                $('#mobile').focus();
+                return false;
+            }
+            if(mobile.length < 10)
+               {
+                new Toasteur("top-center", 2000).error("mobile Must be 10 Digits Long", 'Error!'); 
+                $('#mobile').focus();
+                return false;
+                }
+                if(mobile.length > 10)
+                {
+                new Toasteur("top-center", 2000).error("Mobile Not Grater than 10 Digits Long", 'Error!'); 
+                $('#mobile').focus();
+                return false;
+                }
+    
+                if (email == '') {
+                new Toasteur("top-center", 2000).error("Email  ID is Required", 'Error!');
+                $('#email').focus();
+                return false;
+                }
+    
+                if (address == '') {
+                new Toasteur("top-center", 2000).error("Address is Required", 'Error!');
+                $('#address').focus();
+                return false;
+                }
+    
+                if (checkin == '') {
+                new Toasteur("top-center", 2000).error("Check-In date is Required", 'Error!');
+                $('#checkin').focus();
+                return false;
+                }
+    
+               
+    
+                if (checkout == '') {
+                new Toasteur("top-center", 2000).error("Check-Out date is Required", 'Error!');
+                $('#checkout').focus();
+                return false;
+                }
+    
+                if (adults == '') {
+                new Toasteur("top-center", 2000).error("Adults is Required", 'Error!');
+                $('#adults').focus();
+                return false;
+                }
+    
+                if (child == '') {
+                new Toasteur("top-center", 2000).error("Child is Required", 'Error!');
+                $('#child').focus();
+                return false;
+                }
+    
+            
+            else {
+    
+                $("#booking").submit();
+                $("#loadersss").show();
+    
+                return true;
+            }
+    
+        }
+    
+    </script>
+    <script>
+        $('#checkin,#checkout').keypress(function(event){
+          new Toasteur("top-center", 5000).error("Please Select Datepicker Not Enter Manual Date", 'Error!'); 
+        event.preventDefault();});
+    
+        function TDate1() {
+             
+           
+             var fromDate = document.getElementById("checkin").value;
+            var toDate = document.getElementById("checkout").value;
+      
+          if (fromDate > toDate) {
+              new Toasteur("top-center", 5000).error("The Check-Out Date must be Bigger to Check-In Date", 'Error!');
+              document.getElementById("checkout").value = "";
+              return false;
+          }
+      }
+    
+    
+        function FDate1() {
+             
+        
+            document.getElementById("checkout").value = "";
+             var fromDate = document.getElementById("checkin").value;
+             var toDate = document.getElementById("checkout").value;
+     
+             if(fromDate > toDate)
+             {
+               
+               new Toasteur("top-center", 5000).error("Check-Out Date Not Greater Check-In Date", 'Error!');
+               document.getElementById("checkin").value = "";
+               document.getElementById("checkout").value = "";
+               return false;
+             }
+     
+             }
+    
+    </script>
+    
+     <!-- Include Date Range Picker -->
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+     
+           <script>
+             $(document).ready(function(){
+               var date_input=$('input[name="checkin"]'); //our date input has the name "date"
+               var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+               date_input.datepicker({
+                 format: 'dd-mm-yyyy',
+                 container: container,
+                 todayHighlight: true,
+                 autoclose: true,
+                 startDate: '<%= formatDatedmy(managedate(1)) %>',
+                 endDate: '<%= formatDatedmy(managedate(30)) %>'
+               })
+             })
+           </script>
+     
+           <script>
+             $(document).ready(function(){
+               var date_input=$('input[name="checkout"]'); //our date input has the name "date"
+               var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+               date_input.datepicker({
+                 format: 'dd-mm-yyyy',
+                 container: container,
+                 todayHighlight: true,
+                 autoclose: true,
+                 startDate: '<%= formatDatedmy(managedate(2)) %>',
+                 endDate: '<%= formatDatedmy(managedate(31)) %>'
+               })
+             })
+           </script>
+           <script type="text/javascript">
+               function setRoom(val)
+               {
+                  let num_adult     = parseInt(val);
+                  let room_capacity = parseInt($("#room_capacity").val());
+                  let sanVal        = num_adult / room_capacity;
+                  let num_room      = Math.ceil(sanVal);
+                  $("#num_room").val(num_room);
+                  $("#num_room").attr({"min" : num_room });
+               }
+    
+               function chkRoom()
+               {
+                  let num_adult     = parseInt($("#adults").val());
+                  let room_capacity = parseInt($("#room_capacity").val());
+                  let sanVal        = num_adult / room_capacity;
+                  let requiredRoom  = Math.ceil(sanVal);
+                  let num_room      = parseInt($("#num_room").val());
+                  if (requiredRoom > num_room) {
+                      new Toasteur("top-center", 5000).error("As per your requirement the number of room must be "+requiredRoom, 'Error!');
+                      $("#num_room").val(requiredRoom);
+                      return false;
+                     }
+               }
+           </script>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+    <div id="navbar-animmenu" >
+      <ul class="show-dropdown main-navbar">
+          <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+          <li  >
+              <a href="/booking"><i class="fa fa-hotel"></i>Hotels</a>
+          </li>
+          <li>
+            <a href="/diya-booking-history"><i class="fa fa-user"></i>Diya And Prashad</a>
+          </li>
+          <li>
+              <a href="/tour-package-booking-history"><i class="fa fa-gift"></i>Tour Packages</a>
+          </li>
+          <li class="active">
+              <a href="/cabs-booking-history"><i class="fa fa-car"></i>Cabs</a>
+          </li>
+          <li >
+              <a href="guide-booking-history"><i class="fa fa-user"></i>Guide</a>
+          </li>
+          
+          
+      </ul>
+  </div>
+
+      <main class="main1">
+        <section class="py-0 ">
+        
+          <div class="container-fluid">
+
+
+           <div style="margin-top: 20%;">
+            <center>
+            <img src="/app-assets/img/services/favourite.png" style="height: 200px;">
+            <h4>No Booking to show!</h4>
+            <h5>You don't have any Bookings<br>explore now and book your Cab.</h5>
+            <a href="/" class="btn btn-danger"> Explore</a>
+        </center>
+           </div>
+
+           
+            
+         
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+
+<script>
+  // ---------horizontal-navbar-menu-----------
+  var tabsNewAnim = $('#navbar-animmenu');
+		var selectorNewAnim = $('#navbar-animmenu').find('li').length;
+		var selectorNewAnim = $(".tabs").find(".selector");
+		var activeItemNewAnim = tabsNewAnim.find('.active');
+		var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+		var itemPosNewAnimLeft = activeItemNewAnim.position();
+		$(".hori-selector").css({
+			"left":itemPosNewAnimLeft.left + "px",
+			"width": activeWidthNewAnimWidth + "px"
+		});
+		$("#navbar-animmenu").on("click","li",function(e){
+			$('#navbar-animmenu ul li').removeClass("active");
+			$(this).addClass('active');
+			var activeWidthNewAnimWidth = $(this).innerWidth();
+			var itemPosNewAnimLeft = $(this).position();
+			$(".hori-selector").css({
+				"left":itemPosNewAnimLeft.left + "px",
+				"width": activeWidthNewAnimWidth + "px"
+			});
+		});
+</script>

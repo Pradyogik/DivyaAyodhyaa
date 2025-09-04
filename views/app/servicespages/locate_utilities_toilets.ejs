@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+    <style>
+.mustcontent p i {
+    background: #ffa500;
+    padding: 4px 7px;
+    border-radius: 50%;
+    /* width: 40px; */
+    color: #fff;
+    margin-right: 4%;
+}
+    </style>
+
+    <body>
+        <div class="inner-header affix">
+            <h3><a href="/servicespages?page_id=5"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a>
+                <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png">
+            </h3>
+
+        </div>
+
+        <main class="main1">
+            <section class="py-0 ">
+                <div class="container-fluid">
+                    <% if(toiletlist.length> 0)
+                        {
+                        for (let l of toiletlist)
+                        {
+
+                        %>
+
+                        <div class="musrvisitdiv">
+                            <h4><%= l.toilet_name %></h4>
+                            <hr style="margin: 10px 0px 10px 0px;">
+                            <div class="mustimg">
+                                <img class="" src="/app-assets/img/services/sauchlay.jpeg" style="height: 200px;">
+
+                            </div>
+                            <div class="mustcontent">
+                                <!-- <p> <i class="fa fa-map-marker " style="margin-bottom: 0px;"></i></p> -->
+                               <a href="<%= l.direction %>"  target="_blank" class="btn btn-warning btn-sm"> <i class="fa fa-send" ></i> Get Direction</a> 
+
+                            </div>
+
+                        </div>
+
+                        <% } } %>
+
+                        <center>
+                            <ul class="newpagination modal-4">
+                                <% var reamin = totalPages * pageSize;  if (reamin > pageSize) { %>  
+                                <% if (currentPage > 1) { %>
+                                <li><a href="/servicespages?page_id=52&page=<%= currentPage - 1 %>" class="prev"><i class="fa fa-chevron-left"></i> Previous</a></li>
+                                <% } %>
+                                <% for (let i = 1; i <= totalPages; i++) { %>
+                                <% if(i <= 6) { %>
+                                <li><a href="/servicespages?page_id=52&page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a></li>
+                                <% } else if(currentPage == i){ %>
+                                    <li><a href="/servicespages?page_id=52&page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a></li>
+                                    
+                                <% break;  } } %>
+                
+                                <% if(currentPage >= 5) { if(currentPage != totalPages) { %>
+                                <% if(currentPage != totalPages - 1) { %>
+                                <li><a href="javascript:void(0)" class="">...</a></li>
+                                <% } %>
+                                <li><a href="/servicespages?page_id=52&page=<%= totalPages %>"><%= totalPages %></a></li>
+                
+                                <%  } } %>
+                
+                            
+                                <% if (currentPage < totalPages) { %>
+                                <li><a href="/servicespages?page_id=52&page=<%= currentPage + 1 %>" class="next"> Next  <i class="fa fa-chevron-right"></i></a></li> 
+                                <% } %>
+                
+                                <% } %>
+                            
+                            </ul>
+                            </center>
+
+
+
+
+
+
+                </div>
+            </section>
+        </main>
+
+
+        <%- include('../layouts/footer') %>
+    </body>
+
+
+</html>

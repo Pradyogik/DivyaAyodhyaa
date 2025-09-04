@@ -1,0 +1,68 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,  user-scalable=no">
+
+  
+  <title>Divya Ayodhya APP</title>
+  
+  <link href="/app-assets/css/theme.css" rel="stylesheet"/>
+  <link href="/app-assets/css/common.css" rel="stylesheet"/>
+  <link href="/app-assets/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="/app-assets/js/jquery.min.js"></script>
+  <link href="/app-assets/toastValidation/toasteur-default.min.css" rel="stylesheet">
+ <script src="/app-assets/toastValidation/toasteur.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+
+<div id="loader" style="display:none">
+<img src="/app-assets/img/loader.png">
+</div>
+
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  // Prevent copying
+  document.body.addEventListener('copy', (e) => {
+    e.preventDefault();
+  });
+
+  // Prevent context menu (right-click)
+  document.body.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+
+ 
+  // Disable zoom
+  document.addEventListener('wheel', (e) => {
+    if (e.ctrlKey) {
+      e.preventDefault();
+    }
+  });
+
+  // Disable pinch zoom on mobile
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Prevent pinch-zoom on iOS
+  document.addEventListener('gesturestart', (e) => {
+    e.preventDefault();
+  });
+
+  document.addEventListener('gesturechange', (e) => {
+    e.preventDefault();
+  });
+
+  document.addEventListener('gestureend', (e) => {
+    e.preventDefault();
+  });
+});
+
+</script>

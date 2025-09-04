@@ -1,0 +1,96 @@
+<section class="py-0  affix" >
+    <div class="container-fluid">
+<div class="SearchForm " >
+  
+     <div class="noti">
+      <a href="/globalsearch"> 
+        <form class="SearchForm">
+         
+            <div class="FormControl">
+                <input type="text" autocomplete="off" class="seachitem" id="search" name="search" value="" placeholder="<%=lang.search_home%>...." onclick="hideKeyboard()">
+                <button class="BtnSubmit"><img src="https://www.nationaltenders.com/frontend/assets/imgsec.svg" alt="submit"></button>
+            </div>
+        </form>
+      </a>
+      <a  id="lang-select-btn" >
+        <div class="launguage" >
+         <img src="/app-assets/img/launguage.png" style="    height: 36px;">
+      </div>
+    </a>
+      
+        <div class="launguage" style="padding-left: 20px;">
+          
+           <a href="/notification" style="color:#191914;"><i class="fa fa-bell" style="font-size:30px;padding: 6px 0px;"></i>
+           <span id="notification-badge" class="badge badge-primary">0</span></a> 
+        </div>
+      
+    </div>
+ <div>
+       
+    </div>
+</section>
+
+<!-- Language Popup -->
+<div id="lang-popup" class="popup">
+    <div class="popup-content">
+      <span id="close-popup" class="close">&times;</span>
+      <h2><%=lang.select_language%></h2>
+      <br>
+      <% 
+  var encheck = '';
+  var hicheck = '';
+  var finallangtype = langtype.replace(/"/g, '');
+  var encheckedlangen = 'uncheckedlangen';
+  var hicheckedlangen = 'uncheckedlangen';
+  
+  if (finallangtype == 'en') {
+    encheck = '<i class="fa fa-check"></i>';
+    encheckedlangen = 'checkedlangen';
+  } else if (finallangtype == 'hi') {
+    hicheck = '<i class="fa fa-check"></i>';
+    hicheckedlangen = 'checkedlangen';
+  }
+%>
+       
+            <a href="/lang/en" style="color:#fff;"><label class="<%= encheckedlangen %> "><%- encheck %>  English</label></a>
+       
+             <a href="/lang/hi" style="color:#fff;"><label class="<%= hicheckedlangen %> "><%- hicheck %> Hindi</label></a>
+       
+
+     
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  const langSelectBtn = document.getElementById('lang-select-btn');
+  const popup = document.getElementById('lang-popup');
+  const closePopup = document.getElementById('close-popup');
+
+  langSelectBtn.addEventListener('click', () => {
+    popup.style.display = 'block';
+  });
+
+  closePopup.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target == popup) {
+      popup.style.display = 'none';
+    }
+  });
+});
+
+
+
+
+
+
+// Function to hide keyboard when input is clicked
+function hideKeyboard() {
+        document.getElementById('search').blur();
+    }
+
+    </script>
+   

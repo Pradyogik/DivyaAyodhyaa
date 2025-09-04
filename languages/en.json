@@ -1,0 +1,35 @@
+
+
+  {
+   
+    "home": "Home",
+    "favourite": "Favourite",
+    "bookings": "Bookings",
+    "profile": "Profile",
+    "search_home": "Search Homestays",
+    "select_language": "Select Language",
+    "head_one": "What are you looking for? ",
+        "about_ayodhya": "About Ayodhya",
+        "temple_timing": "Temple Timings",
+        "must_vist": "Must Visit Places",
+        "org_staru": "Organisation Structure",
+        "local_uti": "Locate Utilities",
+        "book_homestay": "Book Homestays",
+        "book_diyandprasadam": "Deepdaan",
+        "book_cab": "Book Cabs",
+        "tour_package": "Tour Packages",
+        "purchase_gift": "Purchase Gifts",
+        "book_guides": "Book Guides",
+    "head_two": "Explore Homestays ",  
+       "mid_range": "Mid Range", 
+       "head_1":"The Ramsheela homestay",  
+       "head_add":"Agnikund, Ayodhya",
+       "night":"night", 
+    "head_three": " Must Visit Places ",  
+       "one": "Shri Ram Janmabhoomi", 
+       "two": "Hanuman Garhi", 
+       "three":"Rajdwar Temple"
+
+
+
+  }

@@ -1,0 +1,8 @@
+<div class="footer">
+   <ul class="navigation">
+    <li><a href="/"  class="<%= pageactive === 'home' || pageactive === 'search' || pageactive === 'notification' || pageactive === 'servicepages' ? 'active' : '' %>"><i class="fa fa-home"></i> <%= lang.home %> </a></li>
+    <li><a href="/favourite" class="<%= pageactive === 'favourite' ? 'active' : '' %>"><i class="fa fa-heart-o"></i> <%= lang.favourite %></a></li>
+    <li><a href="/booking"  class="<%= pageactive === 'booking' ? 'active' : '' %>"><i class="fa fa-shopping-cart"></i><%= lang.bookings %> </a></li>
+    <li><a href="/profile"  class="<%= pageactive === 'profile' || pageactive === 'yourorders' || pageactive === 'refundcan' || pageactive === 'termcon' || pageactive === 'contactus' || pageactive === 'sendfeedback' || pageactive === 'privacypolicy' || pageactive === 'faq' ? 'active' : '' %>"><i class="fa fa-user"></i><%= lang.profile %> </a></li>
+   </ul>
+  </div>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+
+<style>
+
+.form-control {
+
+    font-size: 10px !important;
+    height: 28px !important;
+    padding: 6px 5px !important;
+
+}
+label {
+    font-weight: 700 !important;
+    margin-bottom: 0px !important;
+    font-size: 12px !important ;
+}  
+ .main1 {
+
+    display: block !important;
+    overflow-x: auto !important;
+    margin-top: 72px !important;
+    margin-bottom: 85px !important;
+    position: relative !important;
+} 
+</style>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/book_diya_prashad"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    <% if(error.length>0){ %>
+        <script>new Toasteur("top-center", 3000).error(" <%= error %>", 'Error!');</script>
+        
+        
+        <% } %>
+        
+        <% if(success.length>0){ %>
+        <script>new Toasteur("top-center", 3000).success(" <%= success %>", 'Success!');</script>
+        
+        
+        <% } %>
+  
+
+      <main class="main1">
+        <section class="py-0 ">
+        
+          <div class="container-fluid">
+            <div class="">
+				<form name="prashadbooking" id="prashadbooking"  class="contact-form"  method="post" action="/createPrashadBooking">
+					
+					<div class="card" style="box-shadow: none;">
+						
+						<div class="card-body">
+							<div class="">
+
+                                <div class="row book-form">
+                                    <div class="form-input col-xs-6">
+                                        <label for="prashad_type">Prashad <span style="font-size: 20px;color: red;">*</span></label>
+										<select class="form-control"  name="prashad_type" id="prashad_type" onchange="getprice(value)">
+											<option value="">---Select Prashad---</option>
+											<% if(ptypes.length > 0)
+												{ 
+												for (let p of ptypes)
+												{ 	
+                                                    
+															
+												%>
+											<option value="<%= p.id %>"><%= p.name %></option>
+											
+											<% } } %>
+										</select>
+                                    </div>
+                                    <div class="form-input col-xs-6">
+                                        <label for="prashad_price">Prashad Price &#x20B9; <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="prashad_price" id="prashad_price" value="" class="form-control"  readonly />
+                                    </div>
+                                </div>
+
+								<%
+                                if(!session.mobile)
+                                {
+                                  var mobile ='';
+                                  var mobilevalue = '';
+
+                                }
+                                else{
+
+                                    var mobile ='readonly';
+                                    var mobilevalue = session.mobile;
+
+                                }
+                                if(!session.email)
+                                {
+
+                                    var email ='';
+                                   var emailvalue = '';
+                                    
+
+                                }
+                                else
+                                {
+                                    var email ='readonly';
+                                   var emailvalue = session.email;
+
+                                }
+                                %>
+								<div class="row book-form">
+									<div class="form-input col-xs-12">
+										<label for="end_time">Full Name <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="name" id="name" placeholder="Enter Full Name " minlength="1" maxlength="50" class="form-control" onkeydown="return alphaOnly(event);">
+									</div>
+								</div>
+
+								<div class="row book-form">
+									<div class="form-input col-xs-12">
+										<label for="end_time">Mobile <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="mobile" id="mobile" placeholder="Enter Mobile " minlength="10" maxlength="10" value="<%= mobilevalue %>"
+										onkeypress='return event.charCode >= 48 && event.charCode <= 57' onchange="return validateMobile()" class="form-control" <%= mobile %>>
+									</div>
+								</div>
+                                <div class="row book-form">
+									<div class="form-input col-xs-12">
+										<label for="end_time">Email <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="email" id="email" placeholder="Enter Email ID.."  value="<%= emailvalue %>" class="form-control" <%= email %>>
+									</div>
+								</div>
+                                <div class="row book-form" >
+									<div class="form-input col-xs-12">
+										<label for="end_time">Address <span style="font-size: 20px;color: red;">*</span></label>
+										<textarea type="text" name="address" id="address" placeholder="Enter Address" rows="1" class="form-control" ></textarea>
+									</div>
+								</div>
+                                <div class="row book-form">
+                                    <div class="form-input col-xs-6">
+                                        <label for="state_name">State <span style="font-size: 20px;color: red;">*</span></label>
+										<select class="form-control"  name="state_name" id="state_name" onchange="getcity(value)">
+											<option value="">---Select State---</option>
+											<% if(statelist.length > 0)
+												{ 
+												for (let s of statelist)
+												{ 	
+															
+												%>
+											<option value="<%= s.id %>"><%= s.state_name %></option>
+											
+											<% } } %>
+										</select>
+                                    </div>
+                                    <div class="form-input col-xs-6">
+                                        <label for="city_name">City <span style="font-size: 20px;color: red;">*</span></label>
+										<select class="form-control"  name="city_name" id="city_name" >
+											<option value="">---Select City---</option>
+										
+										</select>
+                                    </div>
+                                </div>   
+                                <div class="row book-form">
+                                    <div class="form-input col-xs-6">
+                                        <label for="end_time">Landmark <span style="font-size: 20px;color: red;"></span></label>
+										<textarea type="text" name="locality" id="locality" placeholder="Enter Landmark" rows="1" class="form-control" ></textarea>
+                                    </div>
+                                    <div class="form-input col-xs-6">
+                                        <label for="end_time">Pincode <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="pincode" id="pincode" placeholder="Enter Pincode" minlength="6" maxlength="6" 
+                                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' onchange="return validatePincode()" class="form-control">
+                                    </div>
+                                </div>    
+                                <!-- <div class="col-md-12" >
+									<div class="">
+										<label for="end_time">Pincode <span style="font-size: 20px;color: red;">*</span></label>
+										<input type="text" name="pincode" id="pincode" placeholder="Enter Pincode" minlength="6" maxlength="6" 
+                                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' onchange="return validatePincode()" class="form-control">
+									</div>
+								</div> -->
+                                <br>
+								<div class="col-md-10">
+								
+                                    <center><input class="btn btn-info " value="Proceed to Payment"  onclick="return validatebooking()" style="    width: 100%;"></center>
+                                </div>
+								
+							</div>
+							
+						</div>
+					</div>
+            	</form>
+			</div>
+
+
+
+        </div>
+        </section>
+      </main>
+
+
+      <%- include('../layouts/footer') %>
+  </body>
+
+
+</html>
+
+<script>
+	
+    function validatebooking() {
+        var prashad_type = document.getElementById('prashad_type').value;
+		var name = document.getElementById('name').value;
+        var mobile = document.getElementById('mobile').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+        var state_name = document.getElementById('state_name').value;
+        var city_name = document.getElementById('city_name').value;
+        var pincode = document.getElementById('pincode').value;
+
+        if (prashad_type == '') {
+            new Toasteur("top-center", 2000).error("Prashad  is Required", 'Error!');
+            $('#prashad_type').focus();
+            return false;
+        }
+        if (name == '') {
+            new Toasteur("top-center", 2000).error("Full Name is Required", 'Error!');
+            $('#name').focus();
+            return false;
+        }
+		if (mobile == '') {
+            new Toasteur("top-center", 2000).error("Mobile No.  is Required", 'Error!');
+            $('#mobile').focus();
+            return false;
+        }
+        if(mobile.length < 10)
+        {
+            new Toasteur("top-center", 2000).error("mobile Must be 10 Digits Long", 'Error!'); 
+            $('#mobile').focus();
+            return false;
+            }
+            if(mobile.length > 10)
+            {
+            new Toasteur("top-center", 2000).error("Mobile Not Grater than 10 Digits Long", 'Error!'); 
+            $('#mobile').focus();
+            return false;
+        }
+
+        if (email == '') {
+            new Toasteur("top-center", 2000).error("Email  ID is Required", 'Error!');
+            $('#email').focus();
+            return false;
+        }
+
+        if (address == '') {
+            new Toasteur("top-center", 2000).error("Address is Required", 'Error!');
+            $('#address').focus();
+            return false;
+        }
+        if (state_name == '') {
+            new Toasteur("top-center", 2000).error("State is Required", 'Error!');
+            $('#state_name').focus();
+            return false;
+        }
+        if (city_name == '') {
+            new Toasteur("top-center", 2000).error("City is Required", 'Error!');
+            $('#city_name').focus();
+            return false;
+        }
+
+        if(pincode.length < 6)
+        {
+            new Toasteur("top-center", 2000).error("Pincode Must be 10 Digits Long", 'Error!'); 
+            $('#pincode').focus();
+            return false;
+            }
+            if(pincode.length > 6)
+            {
+            new Toasteur("top-center", 2000).error("Pincode Not Grater than 6 Digits Long", 'Error!'); 
+            $('#pincode').focus();
+            return false;
+        }
+
+          else {
+
+            $("#prashadbooking").submit();
+
+            return true;
+        }
+
+    }
+
+</script>
+<script>
+
+    // Get diya price diya wise
+
+	function getprice(id)
+	{
+       // alert(id);
+
+		$.ajax({
+           type: 'get', // Type of request to be send, called as method
+           url: '/getpricebyprashad/?prashad_type='+id, //  Url to which the request is send
+           dataType: 'html',
+		   success: function (response) { // Callback function if the request is successful
+           // alert(response);
+            if (response) {
+                //alert(response);
+                $('#prashad_price').val(response);
+            } else {
+                $('#prashad_price').val(response);
+            }
+            }
+		});
+		
+
+	}
+
+    // Get city list state wise
+function getcity(id) {
+    //alert(id);
+
+    $.ajax({
+        type: 'GET', // Use GET request
+        url: '/getcitylist/?state_id=' + id, // The URL to send the request
+        dataType: 'json', // Expect the response in JSON format
+        success: function (response) {
+            //alert(JSON.stringify(response)); // Alerting the response to verify the data
+            
+            // Check if the response is valid
+            if (response) {
+                $('#prashadbooking #city_name').empty(); // Clear the previous options
+                $('#prashadbooking #city_name').append('<option value="">Select City</option>'); // Add default option
+                
+                // Loop through the response (assuming it's an array of cities)
+                $.each(response, function (index, city) {
+                    $('#prashadbooking #city_name').append('<option value="' + city.id + '">' + city.city_name + '</option>');
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('Error: ' + error); // In case of error, display it
+        }
+    });
+}
+
+</script>
+<script>
+
+function alphaOnly(event) {
+    var key = event.keyCode;
+    return ((key >= 65 && key <= 90) || key == 8 || key == 32);
+    };
+</script>

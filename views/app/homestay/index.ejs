@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<%- include('../layouts/top-header') %>
+<link href="/app-assets/css/homestay.css" rel="stylesheet"/>
+
+  <body>
+    <div class="inner-header affix">
+        <h3><a href="/"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;</a> <%= pagetitle%> <img src="/app-assets/img/services/iner-header-img.png" ></h3>
+
+    </div>
+    
+    <% if(error.length>0){ %>
+        <script>new Toasteur("top-center", 3000).error(" <%= error %>", 'Error!');</script>
+        
+        
+        <% } %>
+        
+        <% if(success.length>0){ %>
+        <script>new Toasteur("top-center", 3000).success(" <%= success %>", 'Success!');</script>
+        
+        
+        <% } %>
+     <main class="main1" style="margin-bottom: 0px;">
+        <section class="py-0 ">
+        
+            <div class="container-fluid ">
+                <div class="forms-top">
+                    <div class="form-right">
+                        <div class="form-inner-cont">
+                            <h3 class="title-small">Check Availability</h3>
+                            <hr>
+                            <form name="san_01" id="san_01" method="post" class="signin-form" action="/chkproperty">
+                                <div class="row book-form">
+                                    <div class="form-input col-xs-6">
+                                        <label>Check-in Date</label>
+                                        <input class="form-control" name="checkin" id="checkin"  placeholder="DD-MM-YYYY" type="text" value="<%= formatDatedmy(session.availabilityParameters.checkInDate) %>" onchange="FDate()" (keydown)="disableDate()" placeholder="Date" required="">
+                                    </div>
+                                    <div class="form-input col-xs-6">
+                                        <label>Check-out Date</label>
+                                        <input class="form-control" name="checkout" id="checkout" placeholder="DD-MM-YYYY" type="text" min="<%= formatDatedmy(managedate(2)) %>" max="<%= formatDatedmy(managedate(31)) %>" value="<%= formatDatedmy(session.availabilityParameters.checkOutDate) %>" onchange="TDate()" (keydown)="disableDate()" placeholder="Date" required="">
+                                    </div>
+                                    <div class="form-input col-xs-4">
+                                        <label>Adults</label>
+                                        <select id="adults" name="adults" class="form-control" onchange="return setRoom(this.value);" required>
+                                            <option value="1" <%= session.availabilityParameters.numAdults == 1 ? 'selected' : ''%>>01</option>
+                                            <option value="2" <%= session.availabilityParameters.numAdults == 2 ? 'selected' : ''%>>02</option>
+                                            <option value="3" <%= session.availabilityParameters.numAdults == 3 ? 'selected' : ''%>>03</option>
+                                            <option value="4" <%= session.availabilityParameters.numAdults == 4 ? 'selected' : ''%>>04</option>
+                                            <option value="5" <%= session.availabilityParameters.numAdults == 5 ? 'selected' : ''%>>05</option>
+                                            <option value="6" <%= session.availabilityParameters.numAdults == 6 ? 'selected' : ''%>>06</option>
+                                        </select>
+    
+                                    </div>
+                                    <div class="form-input col-xs-4">
+                                        <label>Children</label>
+                                        <select id="child" name="child" class="form-control" required="">
+                                            <option value="0" <%= session.availabilityParameters.numChild == 1 ? 'selected' : ''%>>0</option>
+                                            <option value="1" <%= session.availabilityParameters.numChild == 1 ? 'selected' : ''%>>01</option>
+                                            <option value="2" <%= session.availabilityParameters.numChild == 2 ? 'selected' : ''%>>02</option>
+                                            <option value="3" <%= session.availabilityParameters.numChild == 3 ? 'selected' : ''%>>03</option>
+                                            <option value="4" <%= session.availabilityParameters.numChild == 4 ? 'selected' : ''%>>04</option>
+                                            <option value="5" <%= session.availabilityParameters.numChild == 5 ? 'selected' : ''%>>05</option>
+                                            <option value="6" <%= session.availabilityParameters.numChild == 6 ? 'selected' : ''%>>06</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-input col-xs-4 ">
+                                        <label>Rooms</label>
+                                        <input type="number" class="form-control" name="num_room" id="num_room" value="<%=session.availabilityParameters.numRoom %>" min="1" onkeyup="return chkRoom();">
+                                    </div>
+                                   
+                                    <div class="bottom-btn col-xs-12 ">
+                                        <button class="btn btn-style btn-primary w-100 px-2" style="margin-top: 10px;padding: 0px;" onclick="return validatebooking()">Check Availability</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="best-rooms " id="hotelist">
+                <div class="container-fluid py-lg-5 py-sm-4">
+                    <h3 class="title-big text-center"> Recommended for you</h3>
+                    <div class="best-rooms w3l-blog ">
+                        <div class="SearchForm">
+                            <form>
+                              <div class="FormControl" style="margin-bottom: 20px;    width: 100%;">
+                                <input type="text" class="seachitem" id="search" name="search" placeholder="Search here...">
+                                <button class="BtnSubmit"><img src="https://www.nationaltenders.com/frontend/assets/imgsec.svg" alt="submit"></button>
+                              </div>
+                            </form>
+                          </div>
+                        <div class="warpper">
+                            <input class="radio" id="stay-home" name="group" type="radio" checked>
+                            <input class="radio" id="conatiner" name="group" type="radio">
+                            <input class="radio" id="hotels" name="group" type="radio">
+                            <input class="radio" id="dormitory" name="group" type="radio">
+                          
+                            <div class="tabs">
+                              <label class="tab" id="stay-home" for="stay-home">Home Stay</label>
+                              <label class="tab" id="dormitory" for="dormitory">Dormitory</label>
+                              <label class="tab" id="conatiner" for="conatiner">Container</label>
+                              <!-- <label class="tab" id="hotels" for="hotels">Hotels</label> -->
+                            </div>
+                          
+                            <div class="panels">
+                                <!-- Stay-home -->
+                              <div class="panel" id="stay-home">
+                                <div class="panel-title">Home Stay </div>
+                               <div class="">
+                            <div class="ban-content-inf row" id="searchResults">
+                              <!-- property data load here by ajax -->
+                           </div>
+                              </div>
+                             
+                               </div>
+                               <!-- End Stay-home -->
+            
+                                <!-- Conatainer -->
+                                <div class="panel" id="conatiner">
+                                    <div class="panel-title">Container </div>
+                                <div class="">
+                                <div class="ban-content-inf row">
+            
+                                    <% if(conatinerlist.length > 0)
+                                    { 
+                                    for (let l of conatinerlist)
+                                    { 	
+            
+                                        var hotelid = encrypt(l.id);
+                                        
+                                    %>
+                                    <a href="/stay-ayodhya/property-rooms/<%= hotelid %>"><div class="maghny-gd-1 col-lg-3 col-md-4"  style="margin-bottom: 25px;">
+                                        <div class="maghny-grid">
+                                            <figure class="effect-lily">
+                                                <img class="img-fluid" src="<%= stayhomeimageUrl+ l.image_path %>" alt="">
+                                                <figcaption>
+                                                    <div>
+                                                        <h4 class="top-text"><%= l.property_name %>
+                                                            <ul>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star-o"></span></li>
+                                                            </ul>
+                                                        </h4>
+                                                        <p><i class="fa fa-inr"></i>  <%= l.room_price_start %></p>
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                            <div class="room-info">
+                                                <h3 class="room-title"><a href="/stay-ayodhya/property-rooms/<%= hotelid %>"><%= l.property_name %></a></h3>
+                                            <ul class="">
+                                                    <li><span class="fa fa-map-marker"></span><%= l.distance_from_ram_mandir %> km from Shri Ram Mandir</li>
+                                                
+                                                </ul> 
+                                                <!-- <p><%= limitStringWithDot(l.description,50) %></p> -->
+                                                <a href="/stay-ayodhya/property-rooms/<%= hotelid %>" class="btn mt-3"><%= l.city_name %></a>
+                                                <div class="room-info-bottom">
+                                                    <ul class="room-amenities">
+                                                        <li><a href="#url"><span class="fa fa-bed" title="Beds"></span></a></li>
+                                                        <li><a href="#url"><span class="fa fa-television" title="Television"></span></a></li>
+                                                        <li><a href="#url"><span class="fa fa-bath" title="Private Bathroom"></span></a></li>
+                                                        <li><a href="#url"><span class="fas fa-parking" title="Bike Rental"></span></a></li>
+                                                    </ul>
+                                                    <a href="/stay-ayodhya/property-rooms/<%= hotelid %>" class="btn view">View Rooms →</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div></a>
+                                    <% 
+                                } 
+                            }
+                            else{ %>
+            
+                                <center><h4 style="color:red;text-align:center;font-size:20px;">Container Coming Soon...</h4></center>
+            
+            
+                            <% }
+                            %>
+                                    
+            
+                            
+                            
+                            </div>
+                                </div>
+                                
+                                </div>
+            
+                                <!-- end Conatiner -->
+            
+                                <!-- hotels -->
+                                <div class="panel" id="hotels">
+                                    <div class="panel-title">Hotels </div>
+                                <div class="">
+                                <div class="ban-content-inf row">
+            
+                                    <% if(hotelslist.length > 0)
+                                    { 
+                                    for (let l of hotelslist)
+                                    { 	
+            
+                                        var hotelid = encrypt(l.id);
+                                        
+                                    %>
+                                    <a href="/stay-ayodhya/property-rooms/<%= hotelid %>"><div class="maghny-gd-1 col-lg-3 col-md-4"  style="margin-bottom: 25px;">
+                                        <div class="maghny-grid">
+                                            <figure class="effect-lily">
+                                                <img class="img-fluid" src="<%= stayhomeimageUrl+ l.image_path %>" alt="">
+                                                <figcaption>
+                                                    <div>
+                                                        <h4 class="top-text"><%= l.property_name %>
+                                                            <ul>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star-o"></span></li>
+                                                            </ul>
+                                                        </h4>
+                                                        <p><i class="fa fa-inr"></i>  <%= l.room_price_start %></p>
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                            <div class="room-info">
+                                                <h3 class="room-title"><a href="/stay-ayodhya/property-rooms/<%= hotelid %>"><%= l.property_name %></a></h3>
+                                            <ul class="">
+                                                    <li><span class="fa fa-map-marker"></span><%= l.distance_from_ram_mandir %> km from Shri Ram Mandir</li>
+                                                
+                                                </ul> 
+                                                <!-- <p><%= limitStringWithDot(l.description,50) %></p> -->
+                                                <a href="/stay-ayodhya/property-rooms/<%= hotelid %>" class="btn mt-3"><%= l.city_name %></a>
+                                                <div class="room-info-bottom">
+                                                    <ul class="room-amenities">
+                                                        <li><a href="#url"><span class="fa fa-bed" title="Beds"></span></a></li>
+                                                        <li><a href="#url"><span class="fa fa-television" title="Television"></span></a></li>
+                                                        <li><a href="#url"><span class="fa fa-bath" title="Private Bathroom"></span></a></li>
+                                                        <li><a href="#url"><span class="fas fa-parking" title="Bike Rental"></span></a></li>
+                                                    </ul>
+                                                    <a href="/stay-ayodhya/property-rooms/<%= hotelid %>" class="btn view">View Rooms →</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div></a>
+                                    <% 
+                                } 
+                            }
+                            else{ %>
+            
+                                <center><h4 style="color:red;text-align:center;font-size:20px;">Hotels Coming Soon...</h4></center>
+            
+            
+                            <% }
+                            %>
+                                    
+            
+                            
+                            
+                            </div>
+                                </div>
+                                
+                                </div>
+                                <!-- End hotels -->
+            
+                                 <!-- dormitory -->
+                                 <div class="panel" id="dormitory">
+                                    <div class="panel-title">Dormitory </div>
+                                <div class="">
+                                <div class="ban-content-inf row">
+            
+                                    <% if(dormitorylist.length > 0)
+                                    { 
+                                    for (let l of dormitorylist)
+                                    { 	
+            
+                                        var hotelid = encrypt(l.id);
+                                        
+                                    %>
+                                    <a href="/stay-ayodhya/property-rooms/<%= hotelid %>"><div class="maghny-gd-1 col-lg-3 col-md-4"  style="margin-bottom: 25px;">
+                                        <div class="maghny-grid">
+                                            <figure class="effect-lily">
+                                                <img class="img-fluid" src="<%= stayhomeimageUrl+ l.image_path %>" alt="">
+                                                <figcaption>
+                                                    <div>
+                                                        <h4 class="top-text"><%= l.property_name %>
+                                                            <ul>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star"></span></li>
+                                                                <li> <span class="fa fa-star-o"></span></li>
+                                                            </ul>
+                                                        </h4>
+                                                        <p><i class="fa fa-inr"></i>  <%= l.room_price_start %></p>
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                            <div class="room-info">
+                                                <h3 class="room-title"><a href="/stay-ayodhya/property-rooms/<%= hotelid %>"><%= l.property_name %></a></h3>
+                                            <ul class="">
+                                                    <li><span class="fa fa-map-marker"></span><%= l.distance_from_ram_mandir %> km from Shri Ram Mandir</li>
+                                                
+                                                </ul> 
+                                                <!-- <p><%= limitStringWithDot(l.description,50) %></p> -->
+                                                <a href="/stay-ayodhya/property-rooms/<%= hotelid %>" class="btn mt-3"><%= l.city_name %></a>
+                                                <div class="room-info-bottom">
+                                                    <ul class="room-amenities">
+                                                        <li><a href="#url"><span class="fa fa-bed" title="Beds"></span></a></li>
+                                                        <li><a href="#url"><span class="fa fa-television" title="Television"></span></a></li>
+                                                        <li><a href="#url"><span class="fa fa-bath" title="Private Bathroom"></span></a></li>
+                                                        <li><a href="#url"><span class="fas fa-parking" title="Bike Rental"></span></a></li>
+                                                    </ul>
+                                                    <a href="/stay-ayodhya/property-rooms/<%= hotelid %>" class="btn view">View Rooms →</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div></a>
+                                    <% 
+                                } 
+                            }
+                            else{ %>
+            
+                                <center><h4 style="color:red;text-align:center;font-size:20px;">Dormitory Coming Soon...</h4></center>
+            
+            
+                            <% }
+                            %>
+                                    
+            
+                            
+                            
+                            </div>
+                                </div>
+                                
+                                </div>
+                                <!-- End dormitory -->
+            
+                            
+                        </div>
+                        
+                        
+                        <br>
+                        <center>
+                        <ul class="newpagination modal-4">
+                            <% var reamin = totalPages * pageSize;  if (reamin > pageSize) { %>  
+                            <% if (currentPage > 1) { %>
+                            <li><a href="?page=<%= currentPage - 1 %>" class="prev"><i class="fa fa-chevron-left"></i> Previous</a></li>
+                            <% } %>
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                            <% if(i <= 6) { %>
+                            <li><a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a></li>
+                            <% } else if(currentPage == i){ %>
+                                <li><a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a></li>
+                                
+                            <% break;  } } %>
+            
+                            <% if(currentPage >= 5) { if(currentPage != totalPages) { %>
+                            <% if(currentPage != totalPages - 1) { %>
+                            <li><a href="javascript:void(0)" class="">...</a></li>
+                            <% } %>
+                            <li><a href="?page=<%= totalPages %>"><%= totalPages %></a></li>
+            
+                            <%  } } %>
+            
+                        
+                            <% if (currentPage < totalPages) { %>
+                            <li><a href="?page=<%= currentPage + 1 %>" class="next"> Next  <i class="fa fa-chevron-right"></i></a></li> 
+                            <% } %>
+            
+                            <% } %>
+                        
+                        </ul>
+                        </center>
+                        <br>
+                    </div>
+                </div>
+            </div>
+           
+               
+        </section>
+    </main>
+
+
+    <%- include('../layouts/footer') %>
+</body>
+
+
+</html>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script type="text/javascript">
+            
+            function showLoader() {
+                  document.getElementById("loader").style.display = "none";
+                }
+            
+                function hideLoader() {
+                  document.getElementById("loader").style.display = "none";
+                }
+            
+            
+    
+              const searchInput = document.querySelector('#search');
+              
+              const results_body = document.querySelector('#searchResults');
+              
+              // Function to handle search input
+                function handleSearch() {
+                    var fullUrl = window.location.href;
+                    var queryParam = new URL(fullUrl).searchParams.get('SearchInput');
+                    const query = searchInput.value;
+                    if (queryParam) {
+                        load_data(queryParam);
+                    } else {
+                        load_data(query);
+                    }
+                }
+              
+              function load_data(query = '',pagenumber ='')
+              {
+               // alert(pagenumber);
+               
+                  const request = new XMLHttpRequest();
+              
+                  request.open('GET', `/property-search?SearchInput=${query}&page=${pagenumber}`);
+              
+                  request.onload = () => {
+                    hideLoader();
+              
+                      const results = request.responseText;
+                  //alert(results);
+              
+                      results_body.innerHTML = results;
+              
+                  };
+              
+                  request.send();
+              }
+              
+              searchInput.addEventListener('input', () => {
+              
+                  const query = searchInput.value;
+              
+                  load_data(query);
+              
+              });
+              
+              function getpagenumber(pagenumber)
+              {
+               
+                var query = '';
+                load_data(query, pagenumber);
+              
+              }
+
+              // Attach event listener for search input
+        searchInput.addEventListener('input', handleSearch);
+        
+        // On page load, load initial data and populate search input if query parameter exists
+        window.onload = function() {
+            var fullUrl = window.location.href;
+            var queryParam = new URL(fullUrl).searchParams.get('search');
+            if (queryParam) {
+                searchInput.value = queryParam;
+                handleSearch(); // Trigger search if query parameter exists
+                showLoader();
+            }
+            else{
+                handleSearch();
+            }
+           
+        };
+
+            
+               
+            </script>
+            <script type="text/javascript">
+                var load_flag = 0;
+                //loadMore(load_flag);
+                function loadMore(start)
+                {
+                   $.ajax({
+                          url: '/loadmoreproperty', 
+                          data: 'start='+start,
+                           type: 'POST',
+                          success: function (responce) { 
+                            $('#searchResults').append(responce);
+                          }
+                        });
+                }
+            
+                /*$( document ).ready(function() {
+                 $(window).scroll(function(){
+                   if($(window).scrollTop() >= $(document).height()-$(window).height())
+                   {
+                       console.log('sanindia');
+                       loadMore(load_flag);
+                       load_flag +=12;
+                       console.log(load_flag);
+                       
+                   }
+                 });
+            });*/
+            </script>
+            
+            <!-- CODE FOR DATE PICKER START HERE -->
+            <!-- Include Date Range Picker -->
+             <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+              <link rel="stylesheet" href="/resources/demos/style.css">
+              <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+              
+              
+              <script type="text/javascript">
+                 $(document).ready(function(){
+                    $('#checkin').datepicker( { 
+            
+                        dateFormat:"dd-mm-yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        minDate: 0 ,
+                        autoclose: true,
+            
+                       onSelect: function(date){           
+                       var date1 = $('#checkin').datepicker('getDate');        
+                            var date = new Date( Date.parse( date1 ) ); 
+                            date.setDate( date.getDate() + 1 );        
+                            var newDate = date.toDateString(); 
+                            newDate = new Date( Date.parse( newDate ) );                      
+                            $('#checkout').datepicker("option","minDate",newDate);            
+                        }
+                    });
+            
+                    $('#checkout').datepicker( {    
+                       dateFormat:"dd-mm-yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        autoclose: true, 
+                        minDate: 0 ,
+                        onSelect: function(date){           
+                            var date11 = $('#checkout').datepicker('getDate');        
+                            var date2 = new Date( Date.parse( date11 ) ); 
+                            date2.setDate( date2.getDate() - 1 );        
+                            var newDate2 = date2.toDateString(); 
+                            newDate2 = new Date( Date.parse( newDate2 ) );                      
+                            $('#checkin').datepicker("option","maxDate",newDate2);            
+                        }
+                    });
+            
+                });
+            
+                /*$(function () {
+                    $("#checkin").datepicker({
+                        appendText:"(dd-mm-yy)",  
+                        dateFormat:"dd-mm-yy",
+                        changeMonth: true,
+                        changeYear: true,
+                         minDate: 0 ,
+                         autoclose: true,
+                        onClose: function (selectedDate) {
+                        $("#checkout").datepicker("option", "minDate", selectedDate);
+                        }
+                    });
+                    $("#checkout").datepicker({
+                        appendText:"(dd-mm-yy)",  
+                        dateFormat:"dd-mm-yy",
+                        changeMonth: true,
+                        changeYear: true,
+                         minDate: 0 ,
+                         autoclose: true,
+                        onClose: function (selectedDate) {
+                            $("#checkin").datepicker("option", "maxDate", selectedDate);
+                        }
+                    });
+                    });*/
+            </script>
+                   <script type="text/javascript">
+                       function setRoom(val)
+                       {
+                          let num_adult     = parseInt(val);
+                          let room_capacity = 2;
+                          let sanVal        = num_adult / room_capacity;
+                          let num_room      = Math.ceil(sanVal);
+                          $("#num_room").val(num_room);
+                          $("#num_room").attr({"min" : num_room });
+                       }
+            
+                       function chkRoom()
+                       {
+                          let num_adult     = parseInt($("#adults").val());
+                          let room_capacity = 2;
+                          let sanVal        = num_adult / room_capacity;
+                          let requiredRoom  = Math.ceil(sanVal);
+                          let num_room      = parseInt($("#num_room").val());
+                          if (requiredRoom > num_room) {
+                              new Toasteur("top-center", 5000).error("As per your requirement the number of room must be "+requiredRoom, 'Error!');
+                              $("#num_room").val(requiredRoom);
+                              return false;
+                             }
+                       }
+                   </script>
+            
+                   <script type="text/javascript">
+                       
+                       function validatebooking() {
+                   
+                        var checkin = new Date(document.getElementById("checkin").value);
+                        var checkout = new Date(document.getElementById("checkout").value);
+                    var adults = document.getElementById('adults').value;
+                    var child = document.getElementById('child').value;
+                    var num_room = document.getElementById('num_room').value;
+            
+                        if (checkin == '') {
+                        new Toasteur("top-center", 2000).error("Check-In date is Required", 'Error!');
+                        $('#checkin').focus();
+                        return false;
+                        }
+            
+                        if (checkout == '') {
+                        new Toasteur("top-center", 2000).error("Check-Out date is Required", 'Error!');
+                        $('#checkout').focus();
+                        return false;
+                        }
+            
+                        if(checkin > checkout)
+                         {
+                           new Toasteur("top-center", 5000).error("Check-In Date Not Greater than Check-out Date", 'Error!');
+                           document.getElementById("checkin").value = "";
+                           document.getElementById("checkout").value = "";
+                           return false;
+                         }
+            
+                        if (adults == '') {
+                        new Toasteur("top-center", 2000).error("Adults is Required", 'Error!');
+                        $('#adults').focus();
+                        return false;
+                        }
+            
+                        if (child == '') {
+                        new Toasteur("top-center", 2000).error("Child is Required", 'Error!');
+                        $('#child').focus();
+                        return false;
+                        }
+            
+                        if (num_room == '') {
+                        new Toasteur("top-center", 2000).error("Rooms is Required", 'Error!');
+                        $('#num_room').focus();
+                        return false;
+                        }
+                        else 
+                        {
+                            $("#san_01").submit();
+                            return true;
+                        }
+            
+                }
+                   </script>
+            
